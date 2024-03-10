@@ -2,19 +2,27 @@ import { Bot } from 'grammy'
 import plugins from './plugins'
 import type { Ctx } from './context'
 import type { Logger } from '~/lib/logging'
+import type { Domain } from '~/domain'
 
 export function createBot({
   logger,
   token,
+  domain,
 }: {
   logger: Logger
   token: string
+  domain: Domain
 }): Bot<Ctx> {
   const bot = new Bot<Ctx>(token)
 
   plugins.logging.install(bot, { logger })
   plugins.floodControl.install(bot)
+  plugins.domain.install(bot, { domain })
   plugins.translations.install(bot)
+
+  bot.command('start', async (ctx) => {
+    ctx.reply(`${ctx.t.Welcome}\n\n${JSON.stringify(ctx.user)}`)
+  })
 
   return bot
 }

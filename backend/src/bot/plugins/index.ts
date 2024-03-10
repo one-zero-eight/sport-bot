@@ -1,7 +1,8 @@
 import type { Bot, Context } from 'grammy'
 import * as logging from './logging'
-import * as translations from './translations'
 import * as floodControl from './flood-control'
+import * as domain from './domain'
+import * as translations from './translations'
 
 // eslint-disable-next-line ts/ban-types
 export type InstallFn<F = {}, O = undefined> =
@@ -11,6 +12,7 @@ export type InstallFn<F = {}, O = undefined> =
 
 export default {
   logging,
-  translations,
   floodControl,
+  domain,
+  translations,
 }

@@ -1,3 +1,1 @@
-export class Sport {
-
-}
+export * from './client'

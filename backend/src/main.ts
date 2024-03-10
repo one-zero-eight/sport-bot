@@ -3,7 +3,7 @@ import { createLogger } from './lib/logging'
 import { createBot } from './bot'
 import { Domain } from './domain'
 import { createDatabase } from './services/database'
-import { Sport } from './services/sport'
+import { SportClient } from './services/sport'
 
 async function main() {
   const config = loadConfigFromEnv()
@@ -22,7 +22,11 @@ async function main() {
         logger: logger.child({ tag: 'database' }),
         connectionUrl: config.postgresUrl,
       }),
-      sport: new Sport(),
+      sport: new SportClient({
+        logger: logger.child({ tag: 'sport' }),
+        baseUrl: config.sport.apiBaseUrl,
+        token: config.sport.token,
+      }),
     }),
   })
 

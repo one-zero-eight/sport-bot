@@ -1,17 +1,17 @@
 import { User } from './schemas/user'
 import type { Logger } from '~/lib/logging'
 import type { Database } from '~/services/database'
-import type { Sport } from '~/services/sport'
+import type { SportClient } from '~/services/sport'
 
 export class Domain {
   private logger: Logger
   private db: Database
-  private sport: Sport
+  private sport: SportClient
 
   constructor(options: {
     logger: Logger
     db: Database
-    sport: Sport
+    sport: SportClient
   }) {
     this.logger = options.logger
     this.db = options.db
@@ -39,5 +39,26 @@ export class Domain {
       data: patch,
     })
     return User.parse(user)
+  }
+
+  public async getStudentBetterThanPercent({
+    telegramId,
+  }: {
+    telegramId: number
+  }): Promise<number> {
+    const user = await this.db.user.findUnique({
+      where: { telegramId },
+      select: { sportId: true },
+    })
+
+    if (!user) {
+      throw new Error(`User with Telegram ID ${telegramId} is not found.`)
+    }
+
+    if (!user.sportId) {
+      throw new Error(`User with Telegram ID ${telegramId} has no sport ID.`)
+    }
+
+    return await this.sport.getBetterThan({ studentId: user.sportId })
   }
 }

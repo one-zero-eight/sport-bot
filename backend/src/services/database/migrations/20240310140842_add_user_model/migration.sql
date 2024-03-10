@@ -6,6 +6,7 @@ CREATE TABLE "User" (
     "firstName" TEXT NOT NULL,
     "lastName" TEXT,
     "language" TEXT,
+    "sportId" INTEGER,
     "notificationPreferences" JSONB NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("telegramId")

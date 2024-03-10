@@ -4,8 +4,10 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "tsx --watch ./src/main.ts",
+    "typecheck": "tsc --noEmit",
+    "prisma:studio": "prisma studio --schema ./src/services/database/schema.prisma",
     "prisma:generate": "prisma generate --schema ./src/services/database/schema.prisma",
-    "prisma:migrations:new": "prisma migrate dev --schema ./src/services/database/schema.prisma --skip-seed --skip-generate --create-only --name",
+    "prisma:migrations:new": "prisma migrate dev --schema ./src/services/database/schema.prisma --skip-seed --skip-generate --create-only",
     "prisma:migrations:apply": "prisma migrate deploy --schema ./src/services/database/schema.prisma",
     "env:generate": "tsx ./scripts/generate-env-example.ts > ./.env.example"
   },

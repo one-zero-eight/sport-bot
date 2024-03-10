@@ -1,6 +1,6 @@
 import { User } from './schemas/user'
 import type { Logger } from '~/lib/logging'
-import { type Database, Prisma } from '~/services/database'
+import type { Database } from '~/services/database'
 import type { Sport } from '~/services/sport'
 
 export class Domain {

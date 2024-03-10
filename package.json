@@ -1,0 +1,46 @@
+{
+  "name": "iu-sport-bot",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@8.15.4",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "test": "vitest",
+    "deps": "taze -wIr",
+    "release": "bumpp -r package.json backend/package.json mini-app/package.json",
+    "prepare": "simple-git-hooks"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^2.8.0",
+    "@types/node": "^20.11.25",
+    "bumpp": "^9.4.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-format": "^0.1.0",
+    "lint-staged": "^15.2.2",
+    "simple-git-hooks": "^2.10.0",
+    "taze": "^0.13.3",
+    "tsx": "^4.7.1",
+    "typescript": "^5.4.2",
+    "vitest": "^1.3.1"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
+  },
+  "changelogithub": {
+    "types": {
+      "feat": { "title": "🚀 Enhancements", "semver": "minor" },
+      "fix": { "title": "🩹 Fixes", "semver": "patch" },
+      "perf": { "title": "⚡️ Performance", "semver": "patch" },
+      "refactor": { "title": "♻️ Refactors" },
+      "docs": { "title": "📖 Documentation" },
+      "build": { "title": "📦 Build" },
+      "test": { "title": "🧪 Tests" },
+      "ci": { "title": "🤖 CI" }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "prisma.prisma",
+    "Vue.volar",
+    "Vue.vscode-typescript-vue-plugin"
+  ]
+}

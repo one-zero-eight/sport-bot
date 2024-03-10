@@ -1,0 +1,17 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated-prisma-client"
+}
+
+model User {
+  telegramId BigInt   @id
+  createdAt  DateTime @default(now())
+  username   String?
+  firstName  String
+  lastName   String?
+}

@@ -1,7 +1,7 @@
 {
   "name": "iu-sport-bot",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "packageManager": "pnpm@8.15.4",
   "scripts": {
@@ -33,15 +33,36 @@
   },
   "changelogithub": {
     "types": {
-      "feat": { "title": "🚀 Enhancements", "semver": "minor" },
-      "fix": { "title": "🩹 Fixes", "semver": "patch" },
-      "perf": { "title": "⚡️ Performance", "semver": "patch" },
-      "refactor": { "title": "♻️ Refactors" },
-      "docs": { "title": "📖 Documentation" },
-      "build": { "title": "📦 Build" },
-      "test": { "title": "🧪 Tests" },
-      "chore": { "title": "🧹 Chore" },
-      "ci": { "title": "🤖 CI" }
+      "feat": {
+        "title": "🚀 Enhancements",
+        "semver": "minor"
+      },
+      "fix": {
+        "title": "🩹 Fixes",
+        "semver": "patch"
+      },
+      "perf": {
+        "title": "⚡️ Performance",
+        "semver": "patch"
+      },
+      "refactor": {
+        "title": "♻️ Refactors"
+      },
+      "docs": {
+        "title": "📖 Documentation"
+      },
+      "build": {
+        "title": "📦 Build"
+      },
+      "test": {
+        "title": "🧪 Tests"
+      },
+      "chore": {
+        "title": "🧹 Chore"
+      },
+      "ci": {
+        "title": "🤖 CI"
+      }
     }
   }
 }

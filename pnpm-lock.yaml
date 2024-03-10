@@ -50,9 +50,6 @@ importers:
       '@prisma/client':
         specifier: 5.10.2
         version: 5.10.2(prisma@5.10.2)
-      '@zodios/core':
-        specifier: ^10.9.6
-        version: 10.9.6(axios@1.6.7)(zod@3.22.4)
       axios:
         specifier: ^1.6.7
         version: 1.6.7
@@ -1414,16 +1411,6 @@ packages:
 
   /@vue/shared@3.4.21:
     resolution: {integrity: sha512-PuJe7vDIi6VYSinuEbUIQgMIRZGgM8e4R+G+/dQTk0X1NEdvgvvgv7m+rfmDH1gZzyA1OjjoWskvHlfRNfQf3g==}
-
-  /@zodios/core@10.9.6(axios@1.6.7)(zod@3.22.4):
-    resolution: {integrity: sha512-aH4rOdb3AcezN7ws8vDgBfGboZMk2JGGzEq/DtW65MhnRxyTGRuLJRWVQ/2KxDgWvV2F5oTkAS+5pnjKbl0n+A==}
-    peerDependencies:
-      axios: ^0.x || ^1.0.0
-      zod: ^3.x
-    dependencies:
-      axios: 1.6.7
-      zod: 3.22.4
-    dev: false
 
   /abbrev@2.0.0:
     resolution: {integrity: sha512-6/mh1E2u2YgEsCHdY0Yx5oW+61gZU+1vXaoiHHrpKeuRNNgFvS+/jrwHiQhB5apAf5oB7UB7E19ol2R2LKH8hQ==}

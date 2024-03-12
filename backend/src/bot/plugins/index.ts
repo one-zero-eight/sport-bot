@@ -1,6 +1,7 @@
 import type { Bot, Context } from 'grammy'
 import * as logging from './logging'
 import * as floodControl from './flood-control'
+import * as parseMode from './parse-mode'
 import * as domain from './domain'
 import * as translations from './translations'
 
@@ -13,6 +14,7 @@ export type InstallFn<F = {}, O = undefined> =
 export default {
   logging,
   floodControl,
+  parseMode,
   domain,
   translations,
 }

@@ -1,5 +1,5 @@
 import type { InstallFn } from '.'
-import { type Level, type Logger, getLogFn } from '~/lib/logging'
+import { type Level, type Logger, getLogFn } from '~/utils/logging'
 
 export type LoggingOptions = {
   logger: Logger

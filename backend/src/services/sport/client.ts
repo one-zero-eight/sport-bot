@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { z } from 'zod'
 import type { AxiosInstance } from 'axios'
-import type { Logger } from '~/lib/logging'
+import type { Logger } from '~/utils/logging'
 
 export class SportClient {
   private logger: Logger

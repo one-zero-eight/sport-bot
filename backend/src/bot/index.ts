@@ -2,7 +2,7 @@ import { Bot } from 'grammy'
 import plugins from './plugins'
 import handlers from './handlers'
 import type { Ctx } from './context'
-import type { Logger } from '~/lib/logging'
+import type { Logger } from '~/utils/logging'
 import type { Domain } from '~/domain'
 
 export function createBot({

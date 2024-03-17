@@ -1,5 +1,5 @@
 import { PrismaClient } from './generated-prisma-client'
-import type { Logger } from '~/lib/logging'
+import type { Logger } from '~/utils/logging'
 
 export * from './generated-prisma-client'
 

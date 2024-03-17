@@ -1,5 +1,5 @@
 import { loadConfigFromEnv } from './config'
-import { createLogger } from './lib/logging'
+import { createLogger } from './utils/logging'
 import { createBot } from './bot'
 import { Domain } from './domain'
 import { createDatabase } from './services/database'

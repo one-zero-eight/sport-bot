@@ -1,5 +1,5 @@
 import { User } from './schemas/user'
-import type { Logger } from '~/lib/logging'
+import type { Logger } from '~/utils/logging'
 import type { Database } from '~/services/database'
 import type { SportClient } from '~/services/sport'
 
@@ -60,5 +60,31 @@ export class Domain {
     }
 
     return await this.sport.getBetterThan({ studentId: user.sportId })
+  }
+
+  public async getTrainingsForUser({
+    telegramId,
+    from,
+    to,
+  }: {
+    telegramId: number
+    from: Date
+    to: Date
+  }) {
+    const user = await this.db.user.findFirstOrThrow({
+      where: {
+        telegramId: telegramId,
+        sportId: { not: null },
+      },
+      select: {
+        sportId: true,
+      },
+    })
+
+    return await this.sport.getTrainings({
+      studentId: user.sportId!,
+      from: from,
+      to: to,
+    })
   }
 }

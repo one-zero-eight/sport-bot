@@ -1,5 +1,6 @@
 import { Bot } from 'grammy'
 import plugins from './plugins'
+import handlers from './handlers'
 import type { Ctx } from './context'
 import type { Logger } from '~/lib/logging'
 import type { Domain } from '~/domain'
@@ -21,33 +22,7 @@ export function createBot({
   plugins.domain.install(bot, { domain })
   plugins.translations.install(bot)
 
-  bot.command('start', async (ctx) => {
-    ctx.reply(`${ctx.t.Welcome}\n\n${JSON.stringify(ctx.user)}`)
-  })
-
-  bot.command('howgoodami', async (ctx) => {
-    await ctx.api.sendMessage(
-      ctx.chat.id,
-      ctx.t['HowGoodAmI.Thinking'],
-    )
-
-    ctx.domain.getStudentBetterThanPercent(ctx.user!)
-      .then((percent) => {
-        ctx.api.sendMessage(
-          ctx.chat.id,
-          ctx.t['HowGoodAmI.Answer'](percent),
-          { reply_parameters: { message_id: ctx.update.message!.message_id } },
-        )
-      })
-      .catch((err) => {
-        ctx.logger.error(err)
-        ctx.api.sendMessage(
-          ctx.chat.id,
-          ctx.t['HowGoodAmI.Failed'],
-          { reply_parameters: { message_id: ctx.update.message!.message_id } },
-        )
-      })
-  })
+  bot.use(handlers)
 
   return bot
 }

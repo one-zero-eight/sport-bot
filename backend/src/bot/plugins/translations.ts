@@ -5,6 +5,7 @@ import translations from '~/translations'
 
 export type TranslationsFlavor = {
   t: Translation
+  renegotiateTranslation: (language?: keyof typeof translations) => void
 }
 
 export const install: InstallFn<TranslationsFlavor & DomainFlavor> = (bot) => {
@@ -14,13 +15,19 @@ export const install: InstallFn<TranslationsFlavor & DomainFlavor> = (bot) => {
   )
 
   bot.use((ctx, next) => {
-    if (ctx.user?.language) {
-      ctx.t = getTranslationOrDefault(ctx.user.language)
-    } else if (ctx.from?.language_code) {
-      ctx.t = getTranslationOrDefault(ctx.from.language_code)
-    } else {
-      ctx.t = translations.en
+    ctx.renegotiateTranslation = (language) => {
+      if (language) {
+        ctx.t = getTranslationOrDefault(language)
+      } else if (ctx.user?.language) {
+        ctx.t = getTranslationOrDefault(ctx.user.language)
+      } else if (ctx.from?.language_code) {
+        ctx.t = getTranslationOrDefault(ctx.from.language_code)
+      } else {
+        ctx.t = translations.en
+      }
     }
+    ctx.renegotiateTranslation()
+
     return next()
   })
 }

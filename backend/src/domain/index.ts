@@ -87,4 +87,67 @@ export class Domain {
       to: to,
     })
   }
+
+  public async getTrainingForUser({
+    telegramId,
+    trainingId,
+  }: {
+    telegramId: number
+    trainingId: number
+  }) {
+    const user = await this.db.user.findFirstOrThrow({
+      where: {
+        telegramId: telegramId,
+        sportId: { not: null },
+      },
+      select: {
+        sportId: true,
+      },
+    })
+
+    return await this.sport.getTraining({
+      studentId: user.sportId!,
+      trainingId: trainingId,
+    })
+  }
+
+  public async checkInUserForTraining({
+    telegramId,
+    trainingId,
+  }: {
+    telegramId: number
+    trainingId: number
+  }) {
+    const user = await this.db.user.findFirstOrThrow({
+      where: {
+        telegramId: telegramId,
+        sportId: { not: null },
+      },
+      select: { sportId: true },
+    })
+    await this.sport.checkInForTraining({
+      studentId: user.sportId!,
+      trainingId: trainingId,
+    })
+  }
+
+  public async cancelCheckInUserForTraining({
+    telegramId,
+    trainingId,
+  }: {
+    telegramId: number
+    trainingId: number
+  }) {
+    const user = await this.db.user.findFirstOrThrow({
+      where: {
+        telegramId: telegramId,
+        sportId: { not: null },
+      },
+      select: { sportId: true },
+    })
+    await this.sport.cancelCheckInForTraining({
+      studentId: user.sportId!,
+      trainingId: trainingId,
+    })
+  }
 }

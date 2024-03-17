@@ -12,14 +12,21 @@ const settingsButton = new Button({
   payloadDecoder: () => null,
 })
 
+const trainingsButton = new Button({
+  id: `${VIEW_ID}:trainings`,
+  payloadEncoder: () => '',
+  payloadDecoder: () => null,
+})
+
 export default {
   render: async (ctx) => {
     const keyboard = new InlineKeyboard()
-      .text(ctx.t['Views.Buttons.Settings'], settingsButton.createCallbackData(null))
+      .text(ctx.t['Views.Main.Buttons.Settings'], settingsButton.createCallbackData(null))
+      .text(ctx.t['Views.Main.Buttons.Trainings'], trainingsButton.createCallbackData(null))
 
     return {
       type: 'text',
-      text: ctx.t['Views.Main.Text'],
+      text: ctx.t['Views.Main.Message'],
       keyboard: keyboard,
     }
   },
@@ -34,6 +41,17 @@ export default {
           chatId: ctx.chat!.id,
           messageId: ctx.callbackQuery.message!.message_id,
           content: await views.settings.render(ctx, {}),
+        })
+      })
+
+    composer
+      .filter(trainingsButton.filter)
+      .use(async (ctx) => {
+        ctx.answerCallbackQuery()
+        await ctx.editMessage({
+          chatId: ctx.chat!.id,
+          messageId: ctx.callbackQuery.message!.message_id,
+          content: await views.trainingsDaysList.render(ctx, {}),
         })
       })
 

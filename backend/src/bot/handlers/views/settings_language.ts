@@ -28,7 +28,7 @@ export default {
 
     return {
       type: 'text',
-      text: ctx.t['Views.LanguageSettings.Text'],
+      text: ctx.t['Views.LanguageSettings.Message'],
       keyboard: keyboard,
     }
   },

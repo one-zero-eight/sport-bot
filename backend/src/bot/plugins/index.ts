@@ -2,6 +2,7 @@ import type { Bot, Context } from 'grammy'
 import * as logging from './logging'
 import * as floodControl from './flood-control'
 import * as parseMode from './parse-mode'
+import * as messageSending from './message-sending'
 import * as domain from './domain'
 import * as translations from './translations'
 
@@ -15,6 +16,7 @@ export default {
   logging,
   floodControl,
   parseMode,
+  messageSending,
   domain,
   translations,
 }

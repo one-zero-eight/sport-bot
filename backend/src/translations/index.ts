@@ -1,5 +1,5 @@
-import { en } from './_en'
-import { ru } from './_ru'
+import en from './_en'
+import ru from './_ru'
 
 export type Translation = typeof en
 

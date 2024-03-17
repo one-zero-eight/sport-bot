@@ -1,4 +1,4 @@
-export const en = {
+export default {
   'Welcome': 'Up and running!',
 
   'HowGoodAmI.Thinking': 'Hmm... Let me think 🤔',

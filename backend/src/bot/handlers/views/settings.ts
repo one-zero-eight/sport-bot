@@ -6,24 +6,17 @@ import { Button } from '~/utils/buttons'
 
 const VIEW_ID = 'settings'
 
-const backButton = new Button({
-  id: `${VIEW_ID}:back`,
-  payloadEncoder: () => '',
-  payloadDecoder: () => null,
-})
-
-const languageSettingsButton = new Button({
-  id: `${VIEW_ID}:language`,
-  payloadEncoder: () => '',
-  payloadDecoder: () => null,
-})
+const buttons = {
+  back: new Button({ id: [VIEW_ID, 'back'] }),
+  language: new Button({ id: [VIEW_ID, 'language'] }),
+}
 
 export default {
   render: async (ctx) => {
     const keyboard = new InlineKeyboard()
-      .text(ctx.t['Views.Settings.Buttons.Language'], languageSettingsButton.createCallbackData(null))
+      .text(ctx.t['Views.Settings.Buttons.Language'], buttons.language.dataFor(null))
       .row()
-      .text(ctx.t['Buttons.Back'], backButton.createCallbackData(null))
+      .text(ctx.t['Buttons.Back'], buttons.back.dataFor(null))
 
     return {
       type: 'text',
@@ -35,7 +28,7 @@ export default {
     const composer = new Composer<Ctx>()
 
     composer
-      .filter(languageSettingsButton.filter)
+      .filter(buttons.language.filter)
       .use(async (ctx) => {
         ctx.answerCallbackQuery()
         await ctx.editMessage({
@@ -46,7 +39,7 @@ export default {
       })
 
     composer
-      .filter(backButton.filter)
+      .filter(buttons.back.filter)
       .use(async (ctx) => {
         ctx.answerCallbackQuery()
         ctx.editMessage({

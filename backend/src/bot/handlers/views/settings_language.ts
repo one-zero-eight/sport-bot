@@ -6,25 +6,22 @@ import { Button } from '~/utils/buttons'
 
 const VIEW_ID = 'settings/language'
 
-const backButton = new Button({
-  id: `${VIEW_ID}:back`,
-  payloadEncoder: () => '',
-  payloadDecoder: () => null,
-})
-
-const setLanguageButton = new Button<'en' | 'ru'>({
-  id: `${VIEW_ID}:setLanguage`,
-  payloadEncoder: lang => lang,
-  payloadDecoder: data => data === 'ru' ? 'ru' : 'en',
-})
+const buttons = {
+  back: new Button({ id: [VIEW_ID, 'back'] }),
+  setLanguage: new Button<'en' | 'ru'>({
+    id: [VIEW_ID, 'set-language'],
+    payloadEncoder: data => data,
+    payloadDecoder: data => data === 'ru' ? 'ru' : 'en',
+  }),
+}
 
 export default {
   render: async (ctx) => {
     const keyboard = new InlineKeyboard()
-      .text('🇷🇺 Русский', setLanguageButton.createCallbackData('ru'))
-      .text('🇬🇧 English', setLanguageButton.createCallbackData('en'))
+      .text('🇷🇺 Русский', buttons.setLanguage.dataFor('ru'))
+      .text('🇬🇧 English', buttons.setLanguage.dataFor('en'))
       .row()
-      .text(ctx.t['Buttons.Back'], backButton.createCallbackData(null))
+      .text(ctx.t['Buttons.Back'], buttons.back.dataFor(null))
 
     return {
       type: 'text',
@@ -36,7 +33,7 @@ export default {
     const composer = new Composer<Ctx>()
 
     composer
-      .filter(setLanguageButton.filter)
+      .filter(buttons.setLanguage.filter)
       .use(async (ctx) => {
         await ctx.domain.updateUser({
           telegramId: ctx.user!.telegramId,
@@ -52,7 +49,7 @@ export default {
       })
 
     composer
-      .filter(backButton.filter)
+      .filter(buttons.back.filter)
       .use(async (ctx) => {
         ctx.answerCallbackQuery()
         await ctx.editMessage({

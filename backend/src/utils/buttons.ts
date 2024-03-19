@@ -1,3 +1,4 @@
+import crypto from 'node:crypto'
 import type { Context, Filter } from 'grammy'
 
 export class Button<P = null> {
@@ -7,14 +8,14 @@ export class Button<P = null> {
 
   constructor({
     id,
-    payloadEncoder,
-    payloadDecoder,
+    payloadEncoder = (_: P) => '',
+    payloadDecoder = (_: string) => (null as unknown as P),
   }: {
-    id: string
-    payloadEncoder: (payload: P) => string
-    payloadDecoder: (data: string) => P
+    id: string | string[]
+    payloadEncoder?: (payload: P) => string
+    payloadDecoder?: (data: string) => P
   }) {
-    this.#id = id
+    this.#id = typeof id === 'string' ? id : id.join('::')
     this.#encodePayload = payloadEncoder
     this.#decodePayload = payloadDecoder
   }
@@ -33,22 +34,27 @@ export class Button<P = null> {
     }
   }
 
-  public createCallbackData(payload: P): string {
-    return `${this.callbackDataPrefix}${this.#encodePayload(payload)}`
+  public dataFor(payload: P): string {
+    return `${this.prefix}${this.#encodePayload(payload)}`
   }
 
   private parseCallbackData(data: string): { ok: false } | { ok: true, payload: P } {
-    if (!data.startsWith(this.callbackDataPrefix)) {
+    if (!data.startsWith(this.prefix)) {
       return { ok: false }
     }
-    const payloadEncoded = data.slice(this.callbackDataPrefix.length)
+    const payloadEncoded = data.slice(this.prefix.length)
     return {
       ok: true,
       payload: this.#decodePayload(payloadEncoded),
     }
   }
 
-  private get callbackDataPrefix(): string {
-    return `${this.#id}:`
+  private get prefix(): string {
+    const idHash = crypto
+      .createHash('sha1')
+      .update(this.#id)
+      .digest('hex')
+      .slice(0, 8)
+    return `#${idHash}:`
   }
 }

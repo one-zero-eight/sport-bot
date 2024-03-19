@@ -8,17 +8,14 @@ import { TIMEZONE } from '~/constants'
 
 const VIEW_ID = 'trainings/days-list'
 
-const backButton = new Button({
-  id: `${VIEW_ID}:back`,
-  payloadEncoder: () => '',
-  payloadDecoder: () => null,
-})
-
-const trainingButton = new Button<{ trainingId: number }>({
-  id: `${VIEW_ID}:training`,
-  payloadEncoder: ({ trainingId }) => trainingId.toString(),
-  payloadDecoder: data => ({ trainingId: Number.parseInt(data) }),
-})
+const buttons = {
+  back: new Button({ id: [VIEW_ID, 'back'] }),
+  training: new Button<{ trainingId: number }>({
+    id: [VIEW_ID, 'training'],
+    payloadEncoder: ({ trainingId }) => trainingId.toString(),
+    payloadDecoder: data => ({ trainingId: Number.parseInt(data) }),
+  }),
+}
 
 export type Props = {
   date: Date
@@ -62,12 +59,12 @@ export default {
             ? '🔵'
             : '🔴'
 
-        const data = trainingButton.createCallbackData({ trainingId: training.id })
+        const data = buttons.training.dataFor({ trainingId: training.id })
         keyboard.text(`${statusEmoji} ${timeStart}—${timeEnd}`, data)
         keyboard.text(training.title, data)
         keyboard.row()
       })
-    keyboard.text(ctx.t['Buttons.Back'], backButton.createCallbackData(null))
+    keyboard.text(ctx.t['Buttons.Back'], buttons.back.dataFor(null))
 
     return {
       type: 'text',
@@ -79,7 +76,7 @@ export default {
     const composer = new Composer<Ctx>()
 
     composer
-      .filter(trainingButton.filter)
+      .filter(buttons.training.filter)
       .use(async (ctx) => {
         const training = await ctx.domain.getTrainingForUser({
           telegramId: ctx.from!.id,
@@ -94,7 +91,7 @@ export default {
       })
 
     composer
-      .filter(backButton.filter)
+      .filter(buttons.back.filter)
       .use(async (ctx) => {
         await ctx.editMessage({
           chatId: ctx.chat!.id,

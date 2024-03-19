@@ -8,17 +8,14 @@ import { getDateDayInTimezone, getDayBoundaries } from '~/utils/dates'
 
 const VIEW_ID = 'trainings/day-trainings'
 
-const backButton = new Button({
-  id: `${VIEW_ID}:back`,
-  payloadEncoder: () => '',
-  payloadDecoder: () => null,
-})
-
-const dayButton = new Button<Date>({
-  id: `${VIEW_ID}:day`,
-  payloadEncoder: payload => payload.toISOString(),
-  payloadDecoder: data => new Date(data),
-})
+const buttons = {
+  back: new Button({ id: [VIEW_ID, 'back'] }),
+  day: new Button<Date>({
+    id: [VIEW_ID, 'day'],
+    payloadEncoder: data => data.toISOString(),
+    payloadDecoder: data => new Date(data),
+  }),
+}
 
 export default {
   render: async (ctx) => {
@@ -38,13 +35,13 @@ export default {
       keyboard
         .text(
           ctx.t['Views.TrainingsDaysList.Buttons.Day'](timezoneDate),
-          dayButton.createCallbackData(actualDate),
+          buttons.day.dataFor(actualDate),
         )
         .row()
     }
 
     keyboard.row()
-    keyboard.text(ctx.t['Buttons.Back'], backButton.createCallbackData(null))
+    keyboard.text(ctx.t['Buttons.Back'], buttons.back.dataFor(null))
 
     return {
       type: 'text',
@@ -56,7 +53,7 @@ export default {
     const composer = new Composer<Ctx>()
 
     composer
-      .filter(dayButton.filter)
+      .filter(buttons.day.filter)
       .use(async (ctx) => {
         await ctx.editMessage({
           chatId: ctx.chat!.id,
@@ -67,7 +64,7 @@ export default {
       })
 
     composer
-      .filter(backButton.filter)
+      .filter(buttons.back.filter)
       .use(async (ctx) => {
         ctx.answerCallbackQuery()
         await ctx.editMessage({

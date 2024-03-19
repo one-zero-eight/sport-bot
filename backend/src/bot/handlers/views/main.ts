@@ -6,23 +6,16 @@ import { Button } from '~/utils/buttons'
 
 const VIEW_ID = 'main'
 
-const settingsButton = new Button({
-  id: `${VIEW_ID}:settings`,
-  payloadEncoder: () => '',
-  payloadDecoder: () => null,
-})
-
-const trainingsButton = new Button({
-  id: `${VIEW_ID}:trainings`,
-  payloadEncoder: () => '',
-  payloadDecoder: () => null,
-})
+const buttons = {
+  settings: new Button({ id: [VIEW_ID, 'settings'] }),
+  trainings: new Button({ id: [VIEW_ID, 'trainings'] }),
+}
 
 export default {
   render: async (ctx) => {
     const keyboard = new InlineKeyboard()
-      .text(ctx.t['Views.Main.Buttons.Settings'], settingsButton.createCallbackData(null))
-      .text(ctx.t['Views.Main.Buttons.Trainings'], trainingsButton.createCallbackData(null))
+      .text(ctx.t['Views.Main.Buttons.Settings'], buttons.settings.dataFor(null))
+      .text(ctx.t['Views.Main.Buttons.Trainings'], buttons.trainings.dataFor(null))
 
     return {
       type: 'text',
@@ -34,7 +27,7 @@ export default {
     const composer = new Composer<Ctx>()
 
     composer
-      .filter(settingsButton.filter)
+      .filter(buttons.settings.filter)
       .use(async (ctx) => {
         ctx.answerCallbackQuery()
         await ctx.editMessage({
@@ -45,7 +38,7 @@ export default {
       })
 
     composer
-      .filter(trainingsButton.filter)
+      .filter(buttons.trainings.filter)
       .use(async (ctx) => {
         ctx.answerCallbackQuery()
         await ctx.editMessage({

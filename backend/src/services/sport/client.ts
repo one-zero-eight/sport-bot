@@ -5,6 +5,11 @@ import type { TrainingDetailed, TrainingInfo } from './types'
 import { CalendarTraining, Training } from './schemas'
 import type { Logger } from '~/utils/logging'
 
+/**
+ * InnoSport API client implementation.
+ *
+ * @see https://sugar-slash-7c8.notion.site/Sport-API-9e021517b5664582ae72cd22e02f4cb6
+ */
 export class SportClient {
   private logger: Logger
   private axios: AxiosInstance
@@ -62,8 +67,39 @@ export class SportClient {
     this.axios = axiosInstance
   }
 
+  public async getAllSemesters() {
+    return await this.request({
+      method: 'GET',
+      path: '/semester',
+      responseSchema: z.array(z.object({
+        id: z.number(),
+        name: z.string(),
+      })),
+    })
+  }
+
+  public async getSportHoursInfo({ studentId }: { studentId: number }) {
+    const semesterHoursSchema = z.object({
+      id_sem: z.number(),
+      hours_not_self: z.number(),
+      hours_self_not_debt: z.number(),
+      hours_self_debt: z.number(),
+      hours_sem_max: z.number(),
+      debt: z.number(),
+    })
+
+    return await this.request({
+      method: 'GET',
+      path: `/attendance/${studentId}/hours`,
+      responseSchema: z.object({
+        ongoing_semester: semesterHoursSchema,
+        last_semesters_hours: z.array(semesterHoursSchema),
+      }),
+    })
+  }
+
   public async getBetterThan({ studentId }: { studentId: number }) {
-    return this.request({
+    return await this.request({
       method: 'GET',
       path: `/attendance/${studentId}/better_than`,
       responseSchema: z.number(),
@@ -154,6 +190,53 @@ export class SportClient {
       method: 'POST',
       path: `/training/${trainingId}/cancel_check_in`,
       responseSchema: z.any(),
+    })
+  }
+
+  public async getTrainingsHistoryForSemester({
+    studentId: _, // @todo Use student ID in authorization.
+    semesterId,
+  }: {
+    studentId: number
+    semesterId: number
+  }) {
+    return this.request({
+      method: 'GET',
+      path: `/profile/history_with_self/${semesterId}`,
+      responseSchema: z.object({
+        trainings: z.array(z.object({
+          hours: z.number(),
+          group: z.string(),
+          group_id: z.number(),
+          custom_name: z.string().nullable(),
+          timestamp: z.string(),
+          approved: z.boolean(),
+        })),
+      }),
+    })
+  }
+
+  public async getAllFitnessTestResults({
+    studentId: _, // @todo Use student ID in authorization.
+  }: {
+    studentId: number
+  }) {
+    return this.request({
+      method: 'GET',
+      path: '/fitnesstest/result',
+      responseSchema: z.array(z.object({
+        semester: z.string(),
+        retake: z.boolean(),
+        grade: z.number(),
+        total_score: z.number(),
+        details: z.array(z.object({
+          exercise: z.string(),
+          unit: z.string(),
+          value: z.union([z.string(), z.number()]),
+          score: z.number(),
+          max_score: z.number(),
+        })),
+      })),
     })
   }
 

@@ -1,5 +1,6 @@
 import { TIMEZONE } from '~/constants'
 import type { TrainingDetailed } from '~/services/sport/types'
+import { tgxFromHtml } from '~/utils/tgx-from-html'
 
 export default {
   'Welcome': 'Up and running!',
@@ -51,7 +52,7 @@ export default {
         <i>Accreditted: {accredited ? 'Yes' : 'No'}</i><br/>
         <br/>
         <i>Description:</i><br/>
-        {description}
+        {tgxFromHtml(description)}
       </>
     )
   },

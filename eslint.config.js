@@ -16,10 +16,10 @@ export default antfu(
     yaml: true,
     markdown: true,
     vue: true,
+    jsx: true,
 
     gitignore: false,
     toml: false,
-    jsx: false,
     unocss: false,
     react: false,
     svelte: false,

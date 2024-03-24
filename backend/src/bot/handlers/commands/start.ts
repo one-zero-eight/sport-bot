@@ -7,10 +7,8 @@ export default handler((composer) => {
     .command('start')
     .filter(filters.pm)
     .use(async (ctx) => {
-      await ctx.sendMessage({
-        chatId: ctx.chat.id,
-        threadId: ctx.message.message_thread_id,
-        content: await views.main.render(ctx, {}),
-      })
+      await ctx
+        .send(await views.main.render(ctx, {}))
+        .to(ctx.chat.id)
     })
 })

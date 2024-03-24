@@ -1,12 +1,12 @@
 import type { Context } from 'grammy'
+import type { MessagesFlavor } from '@telegum/grammy-messages'
 import type { LoggingFlavor } from './plugins/logging'
 import type { TranslationsFlavor } from './plugins/translations'
 import type { DomainFlavor } from './plugins/domain'
-import type { MessageSendingFlavor } from './plugins/message-sending'
 
 export type Ctx =
   & Context
+  & MessagesFlavor
   & LoggingFlavor
-  & DomainFlavor
   & TranslationsFlavor
-  & MessageSendingFlavor
+  & DomainFlavor

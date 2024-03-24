@@ -1,6 +1,5 @@
 import { TIMEZONE } from '~/constants'
 import type { TrainingDetailed } from '~/services/sport/types'
-import { escapeHtml } from '~/utils/escape-html'
 
 export default {
   'Welcome': 'Up and running!',
@@ -42,16 +41,18 @@ export default {
     const timeStart = startsAt.toLocaleTimeString('en-US', { timeZone: TIMEZONE })
     const timeEnd = endsAt.toLocaleTimeString('en-US', { timeZone: TIMEZONE })
 
-    return [
-      `<b>${escapeHtml(title)}</b>`,
-      '',
-      `<i>Date: ${date}</i>`,
-      `<i>Time: ${timeStart}—${timeEnd}</i>`,
-      `<i>Accreditted: ${accredited ? 'Yes' : 'No'}</i>`,
-      '',
-      '<i>Description:</i>',
-      escapeHtml(description),
-    ].join('\n')
+    return (
+      <>
+        <b>{title}</b><br/>
+        <br/>
+        <i>Date: {date}</i><br/>
+        <i>Time: {timeStart}—{timeEnd}</i><br/>
+        <i>Accreditted: {accredited ? 'Yes' : 'No'}</i><br/>
+        <br/>
+        <i>Description:</i><br/>
+        {description}
+      </>
+    )
   },
   'Views.Training.Buttons.CheckIn': 'Check-in',
   'Views.Training.Buttons.CancelCheckIn': 'Cancel check-in',

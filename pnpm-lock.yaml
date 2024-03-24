@@ -53,6 +53,15 @@ importers:
       '@prisma/client':
         specifier: 5.11.0
         version: 5.11.0(prisma@5.11.0)
+      '@telegum/grammy-buttons':
+        specifier: ^0.1.2
+        version: 0.1.2(@telegum/tgx@0.1.0)(grammy@1.21.1)
+      '@telegum/grammy-messages':
+        specifier: ^0.1.2
+        version: 0.1.2(@telegum/tgx@0.1.0)(grammy@1.21.1)
+      '@telegum/tgx':
+        specifier: ^0.1.0
+        version: 0.1.0
       axios:
         specifier: ^1.6.8
         version: 1.6.8
@@ -1035,6 +1044,30 @@ packages:
       - supports-color
       - typescript
     dev: true
+
+  /@telegum/grammy-buttons@0.1.2(@telegum/tgx@0.1.0)(grammy@1.21.1):
+    resolution: {integrity: sha512-vMFRp8WVi6/9PTH6VRUzX1ClAJtk5DcjgfBu1z90PGAu0Llz+pr5wAh871woo48HsjlK3gxjggPTl0qsCDe01w==}
+    peerDependencies:
+      '@telegum/tgx': ^0.1.0
+      grammy: ^1.21.1
+    dependencies:
+      '@telegum/tgx': 0.1.0
+      grammy: 1.21.1
+    dev: false
+
+  /@telegum/grammy-messages@0.1.2(@telegum/tgx@0.1.0)(grammy@1.21.1):
+    resolution: {integrity: sha512-5eamiJ3gNCwaqFwH0UYyomgq+Ue0DvOVcpW9Gz01rZEqrOMnTZpAh4uIX8rAMLBReSbn/Xusxei1PG9+Sg8hZw==}
+    peerDependencies:
+      '@telegum/tgx': ^0.1.0
+      grammy: ^1.21.1
+    dependencies:
+      '@telegum/tgx': 0.1.0
+      grammy: 1.21.1
+    dev: false
+
+  /@telegum/tgx@0.1.0:
+    resolution: {integrity: sha512-kquMrsY4EIkFZNjZrJgRmyecaK8PcKAfg2o3qPrgMGVzRB1bQBnn/lbohDW2I7Ypik+xrNPMl13pTwtfxptjjA==}
+    dev: false
 
   /@tufjs/canonical-json@2.0.0:
     resolution: {integrity: sha512-yVtV8zsdo8qFHe+/3kw81dSLyF7D576A5cCFCi4X7B39tWT7SekaEFUnvnWJHz+9qO7qJTah1JbrDjWKqFtdWA==}

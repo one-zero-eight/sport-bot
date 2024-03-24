@@ -9,6 +9,7 @@ export default handler((composer) => {
   composer.use(views.trainingsDaysList)
   composer.use(views.trainingsDayTrainings)
   composer.use(views.trainingsTraining)
+  composer.use(views.semestersSummary)
 
   composer.use(commands.start)
   composer.use(commands.howgoodami)

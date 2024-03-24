@@ -6,6 +6,7 @@ import settingsLanguage from './settings_language'
 import trainingsDaysList from './trainings_days-list'
 import trainingsDayTrainings from './trainings_day-trainings'
 import trainingsTraining from './trainings_training'
+import semestersSummary from './semesters_summary'
 
 // eslint-disable-next-line ts/ban-types
 export type View<C extends Context, P = {}> = {
@@ -20,4 +21,5 @@ export default {
   trainingsDaysList,
   trainingsDayTrainings,
   trainingsTraining,
+  semestersSummary,
 }

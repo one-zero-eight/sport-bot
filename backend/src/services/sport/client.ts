@@ -2,7 +2,7 @@ import axios from 'axios'
 import { z } from 'zod'
 import type { AxiosInstance } from 'axios'
 import type { TrainingDetailed, TrainingInfo } from './types'
-import { CalendarTraining, Training } from './schemas'
+import { CalendarTraining, FitnessTestResult, Training } from './schemas'
 import type { Logger } from '~/utils/logging'
 
 /**
@@ -224,19 +224,7 @@ export class SportClient {
     return this.request({
       method: 'GET',
       path: '/fitnesstest/result',
-      responseSchema: z.array(z.object({
-        semester: z.string(),
-        retake: z.boolean(),
-        grade: z.number(),
-        total_score: z.number(),
-        details: z.array(z.object({
-          exercise: z.string(),
-          unit: z.string(),
-          value: z.union([z.string(), z.number()]),
-          score: z.number(),
-          max_score: z.number(),
-        })),
-      })),
+      responseSchema: z.array(FitnessTestResult),
     })
   }
 

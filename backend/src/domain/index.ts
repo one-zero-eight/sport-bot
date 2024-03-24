@@ -1,4 +1,5 @@
 import { User } from './schemas/user'
+import type { SemesterSummary } from './types'
 import type { Logger } from '~/utils/logging'
 import type { Database } from '~/services/database'
 import type { SportClient } from '~/services/sport'
@@ -148,6 +149,52 @@ export class Domain {
     await this.sport.cancelCheckInForTraining({
       studentId: user.sportId!,
       trainingId: trainingId,
+    })
+  }
+
+  public async getSemestersSummary({
+    telegramId,
+  }: {
+    telegramId: number
+  }): Promise<SemesterSummary[]> {
+    const user = await this.db.user.findFirstOrThrow({
+      where: {
+        telegramId: telegramId,
+        sportId: { not: null },
+      },
+      select: { sportId: true },
+    })
+
+    const [semesters, sportHours, allFitnessTests] = await Promise.all([
+      this.sport.getAllSemesters(),
+      this.sport.getSportHoursInfo({ studentId: user.sportId! }),
+      this.sport.getAllFitnessTestResults({ studentId: user.sportId! }),
+    ])
+
+    const allSportHours = [
+      sportHours.ongoing_semester,
+      ...sportHours.last_semesters_hours,
+    ]
+
+    return semesters.map(({ id, name }) => {
+      const semesterSportHours = allSportHours.find(h => h.id_sem === id)
+      const semesterFitnessTest = allFitnessTests.find(t => t.semester === name)
+
+      return {
+        title: name,
+        hoursTotal: semesterSportHours
+          ? (semesterSportHours.hours_not_self + semesterSportHours.hours_self_not_debt)
+          : 0,
+        fitnessTest: semesterFitnessTest
+          ? {
+              passed: semesterFitnessTest.grade,
+              pointsTotal: semesterFitnessTest.total_score,
+            }
+          : {
+              passed: false,
+              pointsTotal: 0,
+            },
+      }
     })
   }
 }

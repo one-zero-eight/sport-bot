@@ -27,7 +27,7 @@ export const Group = z.object({
 
 export const FitnessTestExerciseResult = z.object({
   exercise: z.string(),
-  unit: z.string(),
+  unit: z.string().nullable(),
   value: z.union([z.number(), z.string()]),
   score: z.number(),
   max_score: z.number(),

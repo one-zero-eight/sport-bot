@@ -19,6 +19,22 @@ export default {
   'HowGoodAmI.Answer': (percent: number) => `You're better than ${percent}% of students!`,
   'HowGoodAmI.Failed': 'I don\'t know 🤷‍♂️',
 
+  'Alert.CheckInSuccessful': (training: TrainingDetailed) => [
+    '✅ Check-in successful',
+    '',
+    `${training.title} at ${training.startsAt}`,
+  ].join('\n'),
+  'Alert.CheckInCancelled': (training: TrainingDetailed) => [
+    '❌ Check-in cancelled',
+    '',
+    `${training.title} at ${training.startsAt}`,
+  ].join('\n'),
+  'Alert.CheckInUnavailable': 'You cannot check-in for this training.',
+  'Alert.AlreadyCheckedIn': 'You are already checked in for this training.',
+  'Alert.NotCheckedIn': 'You are not checked in for this training.',
+  'Alert.CheckInError': 'Error occurred during check-in.',
+  'Alert.CancelCheckInError': 'Error occurred during check-in cancellation.',
+
   'Views.Main.Message': 'Hi! Here is a list of actions:',
   'Views.Main.Buttons.Settings': '⚙️ Settings',
   'Views.Main.Buttons.Trainings': '⛹️ Classes',

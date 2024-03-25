@@ -9,77 +9,160 @@ import { clockTime, getDateDayInTimezone, getDayBoundaries } from '~/utils/dates
 const VIEW_ID = 'trainings/day-trainings'
 
 const BackButton = makeButton({ id: `${VIEW_ID}:back` })
-const TrainingButton = makeButton<{ trainingId: number }>({
+const TrainingButton = makeButton<{
+  trainingId: number
+  action: 'check-in' | 'cancel-check-in' | 'details'
+}>({
   id: `${VIEW_ID}:training`,
-  encode: ({ trainingId }) => trainingId.toString(),
-  decode: data => ({ trainingId: Number.parseInt(data) }),
+  encode: ({ trainingId, action }) => `${trainingId}:${action}`,
+  decode: (data) => {
+    const [trainingId, action] = data.split(':')
+    switch (action) {
+      case 'check-in':
+      case 'cancel-check-in':
+      case 'details':
+        break
+      default:
+        throw new Error(`Invalid action: ${action}`)
+    }
+    return {
+      trainingId: Number(trainingId),
+      action: action,
+    }
+  },
 })
 
 export type Props = {
   date: Date
 }
 
+const render: View<Ctx, Props>['render'] = async (ctx, { date }) => {
+  const { year, month, day } = getDateDayInTimezone(date, TIMEZONE)
+  const [from, to] = getDayBoundaries({
+    year: year,
+    month: month,
+    day: day,
+    timezone: TIMEZONE,
+  })
+
+  const trainings = await ctx.domain.getTrainingsForUser({
+    telegramId: ctx.from!.id,
+    from: from,
+    to: to,
+  })
+  trainings.sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime())
+
+  return (
+    <>
+      {ctx.t['Views.DayTrainings.Message']}
+      <keyboard>
+        {trainings.map((training) => {
+          const timeStart = clockTime(training.startsAt, TIMEZONE)
+          const timeEnd = clockTime(training.endsAt, TIMEZONE)
+          const statusEmoji = training.checkedIn
+            ? '🟢'
+            : training.checkInAvailable
+              ? '🔵'
+              : '🔴'
+
+          return (
+            <>
+              <TrainingButton
+                trainingId={training.id}
+                action={training.checkedIn ? 'cancel-check-in' : 'check-in'}
+              >
+                {`${statusEmoji} ${timeStart}—${timeEnd}`}
+              </TrainingButton>
+              <TrainingButton trainingId={training.id} action="details">
+                {training.title}
+              </TrainingButton>
+              <br/>
+            </>
+          )
+        })}
+        <BackButton>{ctx.t['Buttons.Back']}</BackButton>
+      </keyboard>
+    </>
+  )
+}
+
 export default {
-  render: async (ctx, { date }) => {
-    const { year, month, day } = getDateDayInTimezone(date, TIMEZONE)
-    const [from, to] = getDayBoundaries({
-      year: year,
-      month: month,
-      day: day,
-      timezone: TIMEZONE,
-    })
-
-    const trainings = await ctx.domain.getTrainingsForUser({
-      telegramId: ctx.from!.id,
-      from: from,
-      to: to,
-    })
-    trainings.sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime())
-
-    return (
-      <>
-        {ctx.t['Views.DayTrainings.Message']}
-        <keyboard>
-          {trainings.map((training) => {
-            const timeStart = clockTime(training.startsAt, TIMEZONE)
-            const timeEnd = clockTime(training.endsAt, TIMEZONE)
-            const statusEmoji = training.checkedIn
-              ? '🟢'
-              : training.checkInAvailable
-                ? '🔵'
-                : '🔴'
-
-            return (
-              <>
-                <TrainingButton trainingId={training.id}>
-                  {`${statusEmoji} ${timeStart}—${timeEnd}`}
-                </TrainingButton>
-                <TrainingButton trainingId={training.id}>
-                  {training.title}
-                </TrainingButton>
-                <br/>
-              </>
-            )
-          })}
-          <BackButton>{ctx.t['Buttons.Back']}</BackButton>
-        </keyboard>
-      </>
-    )
-  },
+  render: render,
   middleware: () => {
     const composer = new Composer<Ctx>()
 
     composer
       .filter(TrainingButton.filter)
       .use(async (ctx) => {
-        const training = await ctx.domain.getTrainingForUser({
-          telegramId: ctx.from!.id,
-          trainingId: ctx.payload.trainingId,
-        })
-        ctx.answerCallbackQuery()
-        await ctx
-          .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)
-          .to(await views.trainingsTraining.render(ctx, { training }))
+        const telegramId = ctx.from.id
+        const trainingId = ctx.payload.trainingId
+        switch (ctx.payload.action) {
+          case 'check-in': {
+            const training = await ctx.domain.getTrainingForUser({ telegramId, trainingId })
+            let alertMessage
+            if (training.checkedIn) {
+              alertMessage = ctx.t['Alert.AlreadyCheckedIn']
+            } else if (!training.checkInAvailable) {
+              alertMessage = ctx.t['Alert.CheckInUnavailable']
+            } else {
+              try {
+                await ctx.domain.checkInUserForTraining({ telegramId, trainingId })
+                alertMessage = ctx.t['Alert.CheckInSuccessful'](training)
+              } catch (error) {
+                ctx.logger.error({
+                  msg: 'failed to check-in a user',
+                  error: error,
+                  telegramId: telegramId,
+                  trainingId: trainingId,
+                })
+                alertMessage = ctx.t['Alert.CheckInError']
+              }
+            }
+            ctx.answerCallbackQuery({ text: alertMessage, show_alert: true })
+            await ctx
+              .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)
+              .to(await render(ctx, { date: training.startsAt }))
+            break
+          }
+          case 'cancel-check-in': {
+            const training = await ctx.domain.getTrainingForUser({ telegramId, trainingId })
+            let alertMessage
+            if (!training.checkedIn) {
+              alertMessage = ctx.t['Alert.NotCheckedIn']
+            } else {
+              try {
+                await ctx.domain.cancelCheckInUserForTraining({ telegramId, trainingId })
+                alertMessage = ctx.t['Alert.CheckInCancelled'](training)
+              } catch (error) {
+                ctx.logger.error({
+                  msg: 'failed to cancel check-in for a user',
+                  error: error,
+                  telegramId: telegramId,
+                  trainingId: trainingId,
+                })
+                alertMessage = ctx.t['Alert.CancelCheckInError']
+              }
+            }
+            ctx.answerCallbackQuery({ text: alertMessage, show_alert: true })
+            await ctx
+              .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)
+              .to(await render(ctx, { date: training.startsAt }))
+            break
+          }
+          case 'details': {
+            const training = await ctx.domain.getTrainingForUser({
+              telegramId: ctx.from!.id,
+              trainingId: ctx.payload.trainingId,
+            })
+            ctx.answerCallbackQuery()
+            await ctx
+              .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)
+              .to(await views.trainingsTraining.render(ctx, { training }))
+            break
+          }
+          default:
+            throw new Error(`Invalid action: ${ctx.payload.action}`)
+        }
       })
 
     composer

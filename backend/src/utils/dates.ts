@@ -81,10 +81,11 @@ export function getDayBoundaries({
   return [boundaryStart, boundaryEnd]
 }
 
-export function clockTime(date: Date): string {
-  return `${
-    date.getHours().toString().padStart(2, '0')
-  }:${
-    date.getMinutes().toString().padStart(2, '0')
-  }`
+export function clockTime(date: Date, timezone?: string): string {
+  return date.toLocaleString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+    timeZone: timezone,
+  })
 }

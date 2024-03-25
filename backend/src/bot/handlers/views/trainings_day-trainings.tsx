@@ -4,7 +4,7 @@ import type { View } from '.'
 import views from '.'
 import type { Ctx } from '~/bot/context'
 import { TIMEZONE } from '~/constants'
-import { getDateDayInTimezone, getDayBoundaries } from '~/utils/dates'
+import { clockTime, getDateDayInTimezone, getDayBoundaries } from '~/utils/dates'
 
 const VIEW_ID = 'trainings/day-trainings'
 
@@ -41,18 +41,8 @@ export default {
         {ctx.t['Views.DayTrainings.Message']}
         <keyboard>
           {trainings.map((training) => {
-            const timeStart = training.startsAt.toLocaleString('en-US', {
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: false,
-              timeZone: TIMEZONE,
-            })
-            const timeEnd = training.endsAt.toLocaleString('en-US', {
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: false,
-              timeZone: TIMEZONE,
-            })
+            const timeStart = clockTime(training.startsAt, TIMEZONE)
+            const timeEnd = clockTime(training.endsAt, TIMEZONE)
             const statusEmoji = training.checkedIn
               ? '🟢'
               : training.checkInAvailable

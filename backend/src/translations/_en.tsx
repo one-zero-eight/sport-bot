@@ -52,7 +52,7 @@ export default {
       <b>{title}</b><br/>
       <br/>
       <b>Date:</b> {dateLong(startsAt)}<br/>
-      <b>Time:</b> {clockTime(startsAt)}—{clockTime(endsAt)}<br/>
+      <b>Time:</b> {clockTime(startsAt, TIMEZONE)}—{clockTime(endsAt, TIMEZONE)}<br/>
       <b>Accreditted:</b> {accredited ? 'Yes' : 'No'}<br/>
       {(teachers.length > 0) && (
         <>

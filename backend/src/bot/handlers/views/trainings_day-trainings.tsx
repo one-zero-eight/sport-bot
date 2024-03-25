@@ -150,10 +150,7 @@ export default {
             break
           }
           case 'details': {
-            const training = await ctx.domain.getTrainingForUser({
-              telegramId: ctx.from!.id,
-              trainingId: ctx.payload.trainingId,
-            })
+            const training = await ctx.domain.getTrainingForUser({ telegramId, trainingId })
             ctx.answerCallbackQuery()
             await ctx
               .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)

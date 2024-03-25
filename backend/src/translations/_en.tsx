@@ -1,10 +1,18 @@
 import { TIMEZONE } from '~/constants'
 import type { TrainingDetailed } from '~/services/sport/types'
+import { clockTime } from '~/utils/dates'
 import { tgxFromHtml } from '~/utils/tgx-from-html'
 
-export default {
-  'Welcome': 'Up and running!',
+function dateLong(date: Date): string {
+  const day = date.toLocaleDateString('en-US', { weekday: 'long', timeZone: TIMEZONE })
+  const month = date.toLocaleDateString('en-US', { month: 'long', timeZone: TIMEZONE })
+  const dayOfMonth = date.getDate()
+  const year = date.getFullYear()
 
+  return `${day}, ${month} ${dayOfMonth}, ${year}`
+}
+
+export default {
   'Buttons.Back': '← Back',
 
   'HowGoodAmI.Thinking': 'Hmm... Let me think 🤔',
@@ -38,24 +46,31 @@ export default {
     endsAt,
     accredited,
     description,
-  }: TrainingDetailed) => {
-    const date = startsAt.toLocaleDateString('en-US', { timeZone: TIMEZONE })
-    const timeStart = startsAt.toLocaleTimeString('en-US', { timeZone: TIMEZONE })
-    const timeEnd = endsAt.toLocaleTimeString('en-US', { timeZone: TIMEZONE })
-
-    return (
-      <>
-        <b>{title}</b><br/>
-        <br/>
-        <i>Date: {date}</i><br/>
-        <i>Time: {timeStart}—{timeEnd}</i><br/>
-        <i>Accreditted: {accredited ? 'Yes' : 'No'}</i><br/>
-        <br/>
-        <i>Description:</i><br/>
-        {tgxFromHtml(description)}
-      </>
-    )
-  },
+    teachers,
+  }: TrainingDetailed) => (
+    <>
+      <b>{title}</b><br/>
+      <br/>
+      <b>Date:</b> {dateLong(startsAt)}<br/>
+      <b>Time:</b> {clockTime(startsAt)}—{clockTime(endsAt)}<br/>
+      <b>Accreditted:</b> {accredited ? 'Yes' : 'No'}<br/>
+      {(teachers.length > 0) && (
+        <>
+          <b>Teachers:</b><br/>
+          {teachers.map(teacher => (
+            <>• {teacher.firstName} {teacher.lastName} ({teacher.email})<br/></>
+          ))}
+        </>
+      )}
+      {(description.trim() && (
+        <>
+          <br/>
+          <b>Description:</b><br/>
+          {tgxFromHtml(description)}
+        </>
+      ))}
+    </>
+  ),
   'Views.Training.Buttons.CheckIn': 'Check-in',
   'Views.Training.Buttons.CancelCheckIn': 'Cancel check-in',
 }

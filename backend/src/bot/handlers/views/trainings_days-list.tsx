@@ -2,11 +2,11 @@ import { Composer } from 'grammy'
 import { makeButton } from '@telegum/grammy-buttons'
 import type { View } from '.'
 import views from '.'
-import { TIMEZONE, TRAININGS_DAYS_LIST_COUNT } from '~/constants'
 import type { Ctx } from '~/bot/context'
+import { TIMEZONE, TRAININGS_DAYS_LIST_COUNT } from '~/constants'
 import { getDateDayInTimezone, getDayBoundaries } from '~/utils/dates'
 
-const VIEW_ID = 'trainings/day-trainings'
+const VIEW_ID = 'trainings/days-list'
 
 const BackButton = makeButton({ id: `${VIEW_ID}:back` })
 const DayButton = makeButton<{ date: Date }>({

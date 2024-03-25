@@ -3,10 +3,10 @@ import { makeButton } from '@telegum/grammy-buttons'
 import type { View } from '.'
 import views from '.'
 import type { Ctx } from '~/bot/context'
-import { getDateDayInTimezone, getDayBoundaries } from '~/utils/dates'
 import { TIMEZONE } from '~/constants'
+import { getDateDayInTimezone, getDayBoundaries } from '~/utils/dates'
 
-const VIEW_ID = 'trainings/days-list'
+const VIEW_ID = 'trainings/day-trainings'
 
 const BackButton = makeButton({ id: `${VIEW_ID}:back` })
 const TrainingButton = makeButton<{ trainingId: number }>({

@@ -76,7 +76,7 @@ const render: View<Ctx, Props>['render'] = async (ctx, { date }) => {
               <TrainingButton trainingId={training.id} action="details">
                 {training.title}
               </TrainingButton>
-              <br/>
+              <br />
             </>
           )
         })}

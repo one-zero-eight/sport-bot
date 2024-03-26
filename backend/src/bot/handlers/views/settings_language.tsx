@@ -20,7 +20,7 @@ export default {
       <keyboard>
         <SetLanguageButton lang="ru">🇷🇺 Русский</SetLanguageButton>
         <SetLanguageButton lang="en">🇬🇧 English</SetLanguageButton>
-        <br/>
+        <br />
         <BackButton>{ctx.t['Buttons.Back']}</BackButton>
       </keyboard>
     </>

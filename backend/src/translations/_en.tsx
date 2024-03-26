@@ -65,23 +65,31 @@ export default {
     teachers,
   }: TrainingDetailed) => (
     <>
-      <b>{title}</b><br/>
-      <br/>
-      <b>Date:</b> {dateLong(startsAt)}<br/>
-      <b>Time:</b> {clockTime(startsAt, TIMEZONE)}—{clockTime(endsAt, TIMEZONE)}<br/>
-      <b>Accreditted:</b> {accredited ? 'Yes' : 'No'}<br/>
+      <b>{title}</b>
+      <br />
+      <br />
+      <b>Date: </b>
+      {dateLong(startsAt)}
+      <br />
+      <b>Time: </b>
+      {`${clockTime(startsAt, TIMEZONE)}—${clockTime(endsAt, TIMEZONE)}`}
+      <br />
+      <b>Accreditted: </b>
+      {accredited ? 'Yes' : 'No'}
+      <br />
       {(teachers.length > 0) && (
         <>
-          <b>Teachers:</b><br/>
-          {teachers.map(teacher => (
-            <>• {teacher.firstName} {teacher.lastName} ({teacher.email})<br/></>
-          ))}
+          <br />
+          <b>Teachers:</b>
+          <br />
+          {teachers.map(teacher => `• ${teacher.firstName} ${teacher.lastName} (${teacher.email})\n`)}
         </>
       )}
       {(description.trim() && (
         <>
-          <br/>
-          <b>Description:</b><br/>
+          <br />
+          <b>Description:</b>
+          <br />
           {tgxFromHtml(description)}
         </>
       ))}

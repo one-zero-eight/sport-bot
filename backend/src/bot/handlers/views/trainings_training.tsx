@@ -60,7 +60,7 @@ export default {
               {ctx.t['Views.Training.Buttons.CheckIn']}
             </CheckInButton>
           )}
-          <br/>
+          <br />
           <BackButton date={training.startsAt}>
             {ctx.t['Buttons.Back']}
           </BackButton>

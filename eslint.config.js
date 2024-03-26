@@ -5,7 +5,7 @@ export default antfu(
     stylistic: {
       indent: 2,
       quotes: 'single',
-      jsx: false,
+      jsx: true,
       semi: false,
     },
     formatters: { markdown: 'dprint' },

@@ -13,7 +13,12 @@ function tgxFromNode(node: ChildNode): TgxElement {
     case node.ELEMENT_NODE:
       switch ((node as Element).tagName) {
         case 'P':
-          return <>{Array.from(node.childNodes).map(tgxFromNode)}<br/></>
+          return (
+            <>
+              {Array.from(node.childNodes).map(tgxFromNode)}
+              <br />
+            </>
+          )
         case 'A':
           return <a href={(node as HTMLAnchorElement).href}>{Array.from(node.childNodes).map(tgxFromNode)}</a>
         case 'B':
@@ -28,7 +33,7 @@ function tgxFromNode(node: ChildNode): TgxElement {
         case 'STRIKE':
           return <s>{Array.from(node.childNodes).map(tgxFromNode)}</s>
         case 'BR':
-          return <br/>
+          return <br />
         default:
           return <>{Array.from(node.childNodes).map(tgxFromNode)}</>
       }

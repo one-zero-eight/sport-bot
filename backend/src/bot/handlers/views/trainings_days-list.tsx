@@ -38,7 +38,7 @@ export default {
                 <DayButton date={actualDate}>
                   {ctx.t['Views.TrainingsDaysList.Buttons.Day'](timezoneDate)}
                 </DayButton>
-                <br/>
+                <br />
               </>
             )
           })}

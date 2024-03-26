@@ -17,7 +17,7 @@ export default {
       <keyboard>
         <SettingsButton>{ctx.t['Views.Main.Buttons.Settings']}</SettingsButton>
         <TrainingsButton>{ctx.t['Views.Main.Buttons.Trainings']}</TrainingsButton>
-        <br/>
+        <br />
         <SemestersButton>{ctx.t['Views.Main.Buttons.Semesters']}</SemestersButton>
       </keyboard>
     </>

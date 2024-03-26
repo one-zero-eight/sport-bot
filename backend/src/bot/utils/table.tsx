@@ -39,7 +39,12 @@ export function Table({
 
   return (
     <>
-      {table.map(row => (<code>{row}<br/></code>))}
+      {table.map(row => (
+        <code>
+          {row}
+          <br />
+        </code>
+      ))}
     </>
   )
 }

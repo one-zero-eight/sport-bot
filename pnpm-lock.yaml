@@ -50,6 +50,9 @@ importers:
       '@grammyjs/parse-mode':
         specifier: ^1.9.0
         version: 1.9.0(grammy@1.21.1)
+      '@grammyjs/runner':
+        specifier: ^2.0.3
+        version: 2.0.3(grammy@1.21.1)
       '@prisma/client':
         specifier: 5.11.0
         version: 5.11.0(prisma@5.11.0)
@@ -576,6 +579,16 @@ packages:
     peerDependencies:
       grammy: ^1.20.1
     dependencies:
+      grammy: 1.21.1
+    dev: false
+
+  /@grammyjs/runner@2.0.3(grammy@1.21.1):
+    resolution: {integrity: sha512-nckmTs1dPWfVQteK9cxqxzE+0m1VRvluLWB8UgFzsjg62w3qthPJt0TYtJBEdG7OedvfQq4vnFAyE6iaMkR42A==}
+    engines: {node: '>=12.20.0 || >=14.13.1'}
+    peerDependencies:
+      grammy: ^1.13.1
+    dependencies:
+      abort-controller: 3.0.0
       grammy: 1.21.1
     dev: false
 

@@ -29,11 +29,11 @@ export function Table({
       const padding = ' '.repeat(colLengths[i] - cell.length)
       return `${cell}${padding}`
     })
-    table.push(cells.join(' | '))
+    table.push(cells.join(' │ '))
   }
 
   if (headingRow) {
-    const divider = colLengths.map(len => '-'.repeat(len)).join('-+-')
+    const divider = colLengths.map(len => '─'.repeat(len)).join('─┼─')
     table.splice(1, 0, divider)
   }
 

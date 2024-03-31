@@ -1,19 +1,15 @@
-import axios from 'axios'
 import { z } from 'zod'
-import type { AxiosInstance } from 'axios'
 import type { TrainingDetailed, TrainingInfo } from './types'
 import { CalendarTraining, FitnessTestResult, Training } from './schemas'
 import type { Logger } from '~/utils/logging'
+import { ApiClient } from '~/utils/api-client'
 
 /**
  * InnoSport API client implementation.
  *
  * @see https://sugar-slash-7c8.notion.site/Sport-API-9e021517b5664582ae72cd22e02f4cb6
  */
-export class SportClient {
-  private logger: Logger
-  private axios: AxiosInstance
-
+export class SportClient extends ApiClient {
   constructor({
     logger,
     baseUrl,
@@ -23,48 +19,15 @@ export class SportClient {
     baseUrl: string
     token: string
   }) {
-    const axiosInstance = axios.create({
-      baseURL: baseUrl,
-      headers: {
-        Authorization: `Bearer ${token}`,
+    super({
+      logger: logger,
+      axiosOptions: {
+        baseURL: baseUrl,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
     })
-
-    axiosInstance.interceptors.request.use(
-      (config) => {
-        logger.debug({
-          msg: 'API request initiated',
-          config: {
-            auth: config.auth,
-            baseURL: config.baseURL,
-            data: config.data,
-            headers: config.headers,
-            url: config.url,
-          },
-        })
-        return config
-      },
-    )
-
-    axiosInstance.interceptors.response.use(
-      (response) => {
-        logger.debug({
-          msg: 'API request finished',
-          response: response,
-        })
-        return response
-      },
-      (error) => {
-        logger.error({
-          msg: 'API request failed',
-          error: error,
-        })
-        return Promise.reject(error)
-      },
-    )
-
-    this.logger = logger
-    this.axios = axiosInstance
   }
 
   public async getAllSemesters() {
@@ -226,27 +189,5 @@ export class SportClient {
       path: '/fitnesstest/result',
       responseSchema: z.array(FitnessTestResult),
     })
-  }
-
-  private async request<S extends z.ZodSchema>({
-    method,
-    path,
-    responseSchema,
-    queryParams,
-    data,
-  }: {
-    method: 'GET' | 'POST' | 'DELETE' | 'PUT' | 'PATCH'
-    path: string
-    responseSchema: S
-    queryParams?: any
-    data?: any
-  }): Promise<z.infer<S>> {
-    const response = await this.axios.request({
-      method: method,
-      url: path,
-      data: data,
-      params: queryParams,
-    })
-    return responseSchema.parse(response.data)
   }
 }

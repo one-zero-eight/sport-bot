@@ -64,6 +64,7 @@ function createAxiosWithLogging({
           data: config.data,
           headers: config.headers,
           url: config.url,
+          params: config.params,
         },
       })
       return config
@@ -74,7 +75,10 @@ function createAxiosWithLogging({
     (response) => {
       logger.debug({
         msg: 'API request finished',
-        response: response,
+        response: {
+          data: response.data,
+          status: response.status,
+        },
       })
       return response
     },

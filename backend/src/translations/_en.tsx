@@ -97,4 +97,8 @@ export default {
   ),
   'Views.Training.Buttons.CheckIn': 'Check-in',
   'Views.Training.Buttons.CancelCheckIn': 'Cancel check-in',
+
+  'InNoHassle.LinkAccountsRequest.Message': 'To use this Telegram bot, please login to InNoHassle with your Telegram account. When you\'re done, send /start to continue!',
+  'InNoHassle.LinkAccountsRequest.Button': 'Login with InNoHassle',
+  'InNoHassle.LinkAccountsRequest.ForwardText': 'Link your Telegram to InNoHassle.',
 }

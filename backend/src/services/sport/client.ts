@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import type { TrainingDetailed, TrainingInfo } from './types'
-import { CalendarTraining, FitnessTestResult, Training } from './schemas'
+import { CalendarTraining, FitnessTestResult, SemesterSportHoursInfo, Training } from './schemas'
 import type { Logger } from '~/utils/logging'
 import { ApiClient } from '~/utils/api-client'
 
@@ -10,23 +10,40 @@ import { ApiClient } from '~/utils/api-client'
  * @see https://sugar-slash-7c8.notion.site/Sport-API-9e021517b5664582ae72cd22e02f4cb6
  */
 export class SportClient extends ApiClient {
+  private studentId: number
+
   constructor({
     logger,
     baseUrl,
-    token,
   }: {
     logger: Logger
     baseUrl: string
-    token: string
   }) {
     super({
       logger: logger,
-      axiosOptions: {
-        baseURL: baseUrl,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
+      axiosOptions: { baseURL: baseUrl },
+    })
+    this.studentId = -1
+  }
+
+  public setToken(accessToken: string) {
+    this.axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+  }
+
+  public setStudentId(studentId: number) {
+    this.studentId = studentId
+  }
+
+  public getMe() {
+    return this.request({
+      method: 'GET',
+      path: '/profile/student',
+      responseSchema: z.object({
+        id: z.coerce.number(),
+        name: z.string(),
+        email: z.string(),
+        medical_group: z.string(),
+      }),
     })
   }
 
@@ -41,40 +58,29 @@ export class SportClient extends ApiClient {
     })
   }
 
-  public async getSportHoursInfo({ studentId }: { studentId: number }) {
-    const semesterHoursSchema = z.object({
-      id_sem: z.number(),
-      hours_not_self: z.number(),
-      hours_self_not_debt: z.number(),
-      hours_self_debt: z.number(),
-      hours_sem_max: z.number(),
-      debt: z.number(),
-    })
-
-    return await this.request({
+  public getSportHoursInfo() {
+    return this.request({
       method: 'GET',
-      path: `/attendance/${studentId}/hours`,
+      path: `/attendance/${this.studentId}/hours`,
       responseSchema: z.object({
-        ongoing_semester: semesterHoursSchema,
-        last_semesters_hours: z.array(semesterHoursSchema),
+        ongoing_semester: SemesterSportHoursInfo,
+        last_semesters_hours: z.array(SemesterSportHoursInfo),
       }),
     })
   }
 
-  public async getBetterThan({ studentId }: { studentId: number }) {
-    return await this.request({
+  public getBetterThanPercent() {
+    return this.request({
       method: 'GET',
-      path: `/attendance/${studentId}/better_than`,
+      path: `/attendance/${this.studentId}/better_than`,
       responseSchema: z.number(),
     })
   }
 
   public async getTrainings({
-    studentId: _, // @todo Use student ID in authorization.
     from,
     to,
   }: {
-    studentId: number
     from: Date
     to: Date
   }): Promise<TrainingInfo[]> {
@@ -97,13 +103,7 @@ export class SportClient extends ApiClient {
     }))
   }
 
-  public async getTraining({
-    studentId: _, // @todo Use student ID in authorization.
-    trainingId,
-  }: {
-    studentId: number
-    trainingId: number
-  }): Promise<TrainingDetailed> {
+  public async getTraining(trainingId: number): Promise<TrainingDetailed> {
     const raw = await this.request({
       method: 'GET',
       path: `/training/${trainingId}`,
@@ -128,13 +128,7 @@ export class SportClient extends ApiClient {
     }
   }
 
-  public async checkInForTraining({
-    studentId: _, // @todo Use student ID in authorization.
-    trainingId,
-  }: {
-    studentId: number
-    trainingId: number
-  }): Promise<void> {
+  public async checkInForTraining(trainingId: number): Promise<void> {
     await this.request({
       method: 'POST',
       path: `/training/${trainingId}/check_in`,
@@ -142,13 +136,7 @@ export class SportClient extends ApiClient {
     })
   }
 
-  public async cancelCheckInForTraining({
-    studentId: _, // @todo Use student ID in authorization.
-    trainingId,
-  }: {
-    studentId: number
-    trainingId: number
-  }): Promise<void> {
+  public async cancelCheckInForTraining(trainingId: number): Promise<void> {
     await this.request({
       method: 'POST',
       path: `/training/${trainingId}/cancel_check_in`,
@@ -156,13 +144,7 @@ export class SportClient extends ApiClient {
     })
   }
 
-  public async getTrainingsHistoryForSemester({
-    studentId: _, // @todo Use student ID in authorization.
-    semesterId,
-  }: {
-    studentId: number
-    semesterId: number
-  }) {
+  public getTrainingsHistoryForSemester(semesterId: number) {
     return this.request({
       method: 'GET',
       path: `/profile/history_with_self/${semesterId}`,
@@ -179,11 +161,7 @@ export class SportClient extends ApiClient {
     })
   }
 
-  public async getAllFitnessTestResults({
-    studentId: _, // @todo Use student ID in authorization.
-  }: {
-    studentId: number
-  }) {
+  public getAllFitnessTestResults() {
     return this.request({
       method: 'GET',
       path: '/fitnesstest/result',

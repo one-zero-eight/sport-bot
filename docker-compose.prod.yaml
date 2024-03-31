@@ -1,0 +1,17 @@
+# This is a Docker Compose configuration for production use.
+# For building locally use docker-compose.yaml
+
+# Run all services:
+# docker compose -f docker-compose.yaml -f docker-compose.prod.yaml up --pull always --detach
+
+version: '3'
+
+# Override the default settings for production
+services:
+  bot:
+    # Pull the image from GitHub Container Registry instead of building locally
+    image: 'ghcr.io/one-zero-eight/sport-bot:main'
+    build: !reset null
+
+  db:
+    ports: !reset [] # Do not expose any ports

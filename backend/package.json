@@ -4,7 +4,7 @@
   "version": "0.4.0",
   "scripts": {
     "dev": "tsx --watch ./src/main.ts",
-    "build": "tsup",
+    "start": "tsx ./src/main.ts",
     "typecheck": "tsc --noEmit",
     "prisma:studio": "prisma studio --schema ./src/services/database/schema.prisma",
     "prisma:generate": "prisma generate --schema ./src/services/database/schema.prisma",
@@ -18,11 +18,10 @@
     "@prisma/client": "5.11.0",
     "@telegum/grammy-buttons": "^0.1.3",
     "@telegum/grammy-messages": "^0.1.3",
-    "@telegum/tgx": "^0.1.0",
+    "@telegum/tgx": "^0.1.1",
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
-    "grammy": "^1.21.1",
-    "iso-639-1": "^3.1.2",
+    "grammy": "^1.21.2",
     "jsdom": "^24.0.0",
     "lodash": "^4.17.21",
     "pino": "^8.19.0",
@@ -32,7 +31,8 @@
   "devDependencies": {
     "@types/jsdom": "^21.1.6",
     "@types/lodash": "^4.17.0",
+    "@types/node": "^20.12.2",
     "prisma": "5.11.0",
-    "tsup": "^8.0.2"
+    "typescript": "^5.4.3"
   }
 }

@@ -4,6 +4,7 @@
   "version": "0.4.0",
   "scripts": {
     "dev": "tsx --watch ./src/main.ts",
+    "build": "tsup",
     "typecheck": "tsc --noEmit",
     "prisma:studio": "prisma studio --schema ./src/services/database/schema.prisma",
     "prisma:generate": "prisma generate --schema ./src/services/database/schema.prisma",
@@ -31,6 +32,7 @@
   "devDependencies": {
     "@types/jsdom": "^21.1.6",
     "@types/lodash": "^4.17.0",
-    "prisma": "5.11.0"
+    "prisma": "5.11.0",
+    "tsup": "^8.0.2"
   }
 }

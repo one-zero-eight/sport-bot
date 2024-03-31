@@ -22,6 +22,7 @@ export const install: InstallFn<TranslationsFlavor & DomainFlavor> = (bot) => {
         translation ??= translations[ctx.from.language_code as Language]
       }
       translation ??= translations.en
+      ctx.t = translation
     }
     ctx.updateLanguage()
 

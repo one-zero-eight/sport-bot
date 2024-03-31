@@ -20,7 +20,6 @@ export const install: InstallFn<DomainFlavor, DomainOptions> = (bot, { domain })
         username: ctx.from.username,
         firstName: ctx.from.first_name,
         lastName: ctx.from.last_name,
-        notificationPreferences: { classes: [] },
       })
     }
     return next()

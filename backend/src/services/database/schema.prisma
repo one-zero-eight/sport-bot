@@ -18,9 +18,4 @@ model User {
   // Interface language user prefers as ISO 639-1 language code
   // or null if user did not specify it.
   language String?
-
-  // User's ID in the InnoSport API.
-  sportId Int?
-
-  notificationPreferences Json
 }

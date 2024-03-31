@@ -35,7 +35,7 @@ export default {
           telegramId: ctx.user!.telegramId,
           language: ctx.payload.lang,
         })
-        ctx.renegotiateTranslation(ctx.payload.lang)
+        ctx.updateLanguage(ctx.payload.lang)
         ctx.answerCallbackQuery()
         await ctx
           .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)

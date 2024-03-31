@@ -44,7 +44,7 @@ export const install: InstallFn<LoggingFlavor, LoggingOptions> = (bot, options) 
       log({
         msg: 'update processed',
         updateId: ctx.update.update_id,
-        durationMs: t2 - t1,
+        durationMs: Math.round(t2 - t1),
       })
     })
   }
@@ -67,7 +67,7 @@ export const install: InstallFn<LoggingFlavor, LoggingOptions> = (bot, options) 
         msg: 'Telegram API call completed',
         method: method,
         result: result,
-        durationMs: t2 - t1,
+        durationMs: Math.round(t2 - t1),
       })
 
       return result

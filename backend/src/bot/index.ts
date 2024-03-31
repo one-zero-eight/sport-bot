@@ -18,7 +18,6 @@ export function createBot({
 
   plugins.logging.install(bot, { logger })
   plugins.floodControl.install(bot)
-  plugins.parseMode.install(bot, { parseMode: 'HTML' })
   plugins.messageSending.install(bot)
   plugins.domain.install(bot, { domain })
   plugins.translations.install(bot)

@@ -6,6 +6,7 @@ import { createBot } from './bot'
 import { Domain } from './domain'
 import { createDatabase } from './services/database'
 import { SportClient } from './services/sport'
+import { InnohassleClient } from './services/innohassle'
 
 async function main() {
   const config = loadConfigFromEnv()
@@ -23,13 +24,18 @@ async function main() {
   const bot = createBot({
     logger: logger.child({ tag: 'bot' }),
     token: config.bot.token,
+    config: config,
     domain: new Domain({
       logger: logger.child({ tag: 'domain' }),
       db: db,
       sport: new SportClient({
         logger: logger.child({ tag: 'sport' }),
         baseUrl: config.sport.apiBaseUrl,
-        token: config.sport.token,
+      }),
+      innohassle: new InnohassleClient({
+        logger: logger.child({ tag: 'innohassle' }),
+        baseUrl: config.innohassle.apiBaseUrl,
+        token: config.innohassle.token,
       }),
     }),
   })

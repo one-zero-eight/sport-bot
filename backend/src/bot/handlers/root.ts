@@ -23,7 +23,7 @@ export default handler((composer) => {
         ]]),
       })
     } else {
-      throw err
+      throw err.error
     }
   })
 

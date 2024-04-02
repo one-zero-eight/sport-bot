@@ -4,6 +4,7 @@ import * as floodControl from './flood-control'
 import * as messageSending from './message-sending'
 import * as domain from './domain'
 import * as translations from './translations'
+import * as noopButton from './noop-button'
 
 // eslint-disable-next-line ts/ban-types
 export type InstallFn<F = {}, O = undefined> =
@@ -17,4 +18,5 @@ export default {
   messageSending,
   domain,
   translations,
+  noopButton,
 }

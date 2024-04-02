@@ -4,32 +4,36 @@ import type { View } from '.'
 import views from '.'
 import type { Ctx } from '~/bot/context'
 import type { TrainingDetailed } from '~/services/sport/types'
-import { getDayBoundaries, getTimezoneOffset } from '~/utils/dates'
+import { Day } from '~/utils/dates'
 import { TIMEZONE } from '~/constants'
 
 const VIEW_ID = 'trainings/training'
 
-const BackButton = makeButton<{ date: Date }>({
+const BackButton = makeButton<{ day: Day }>({
   id: `${VIEW_ID}:back`,
-  encode: ({ date }) => date.toISOString(),
-  decode: data => ({ date: new Date(data) }),
+  encode: ({ day }) => day.toString(),
+  decode: data => ({ day: Day.fromString(data) }),
 })
-const CheckInButton = makeButton<{ trainingId: number, date: { year: number, month: number, day: number } }>({
+const CheckInButton = makeButton<{ trainingId: number, day: Day }>({
   id: `${VIEW_ID}:check-in`,
-  encode: ({ trainingId, date }) => `${trainingId}:${date.day}-${date.month}-${date.year}`,
+  encode: ({ trainingId, day }) => `${trainingId}:${day.toString()}`,
   decode: (data) => {
-    const [trainingId, date] = data.split(':')
-    const [day, month, year] = date.split('-').map(Number)
-    return { trainingId: Number(trainingId), date: { day, month, year } }
+    const [trainingId, dayStr] = data.split(':')
+    return {
+      trainingId: Number(trainingId),
+      day: Day.fromString(dayStr),
+    }
   },
 })
-const CancelCheckInButton = makeButton<{ trainingId: number, date: { year: number, month: number, day: number } }>({
+const CancelCheckInButton = makeButton<{ trainingId: number, day: Day }>({
   id: `${VIEW_ID}:cancel-check-in`,
-  encode: ({ trainingId, date }) => `${trainingId}:${date.day}-${date.month}-${date.year}`,
+  encode: ({ trainingId, day }) => `${trainingId}:${day.toString()}`,
   decode: (data) => {
-    const [trainingId, date] = data.split(':')
-    const [day, month, year] = date.split('-').map(Number)
-    return { trainingId: Number(trainingId), date: { day, month, year } }
+    const [trainingId, dayStr] = data.split(':')
+    return {
+      trainingId: Number(trainingId),
+      day: Day.fromString(dayStr),
+    }
   },
 })
 
@@ -39,29 +43,23 @@ export type Props = {
 
 export default {
   render: async (ctx, { training }) => {
-    const trainingDateInUtc = new Date(training.startsAt.getTime() - getTimezoneOffset(TIMEZONE))
-    const trainingDate = {
-      year: trainingDateInUtc.getUTCFullYear(),
-      month: trainingDateInUtc.getUTCMonth() + 1,
-      day: trainingDateInUtc.getUTCDate(),
-    }
-
+    const trainingDay = Day.fromDate(training.startsAt, TIMEZONE)
     return (
       <>
         {ctx.t['Views.Training.Message'](training)}
         <keyboard>
           {training.checkedIn && (
-            <CancelCheckInButton trainingId={training.id} date={trainingDate}>
+            <CancelCheckInButton trainingId={training.id} day={trainingDay}>
               {ctx.t['Views.Training.Buttons.CancelCheckIn']}
             </CancelCheckInButton>
           )}
           {training.checkInAvailable && (
-            <CheckInButton trainingId={training.id} date={trainingDate}>
+            <CheckInButton trainingId={training.id} day={trainingDay}>
               {ctx.t['Views.Training.Buttons.CheckIn']}
             </CheckInButton>
           )}
           <br />
-          <BackButton date={training.startsAt}>
+          <BackButton day={trainingDay}>
             {ctx.t['Buttons.Back']}
           </BackButton>
         </keyboard>
@@ -83,14 +81,9 @@ export default {
           show_alert: true,
         })
 
-        const [startDate, _] = getDayBoundaries({
-          ...ctx.payload.date,
-          timezone: TIMEZONE,
-        })
-
         await ctx
           .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)
-          .to(await views.trainingsDayTrainings.render(ctx, { date: startDate }))
+          .to(await views.trainingsDayTrainings.render(ctx, { day: ctx.payload.day }))
       })
 
     composer
@@ -105,14 +98,9 @@ export default {
           show_alert: true,
         })
 
-        const [startDate, _] = getDayBoundaries({
-          ...ctx.payload.date,
-          timezone: TIMEZONE,
-        })
-
         await ctx
           .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)
-          .to(await views.trainingsDayTrainings.render(ctx, { date: startDate }))
+          .to(await views.trainingsDayTrainings.render(ctx, { day: ctx.payload.day }))
       })
 
     composer

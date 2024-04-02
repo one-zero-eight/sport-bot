@@ -1,3 +1,84 @@
+export type Weekday = 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun'
+
+export class Day {
+  constructor(public year: number, public month: number, public date: number) {}
+
+  public static fromString(dateStr: string): Day {
+    const [year, month, date] = dateStr.split('-').map(Number)
+    if (Number.isNaN(year) || Number.isNaN(month) || Number.isNaN(date)) {
+      throw new TypeError(`Failed to parse date string: "${dateStr}".`)
+    }
+    return new Day(year, month, date)
+  }
+
+  public static fromDate(date: Date, timezone: string = 'UTC'): Day {
+    const offset = getTimezoneOffset(timezone)
+    const dateTz = new Date(date.getTime() + offset)
+
+    return new Day(
+      dateTz.getUTCFullYear(),
+      dateTz.getUTCMonth() + 1,
+      dateTz.getUTCDate(),
+    )
+  }
+
+  public toString(): string {
+    return `${
+      this.year
+    }-${
+      this.month.toString().padStart(2, '0')
+    }-${
+      this.date.toString().padStart(2, '0')
+    }`
+  }
+
+  public asDate(timezone: string = 'UTC'): Date {
+    const offset = getTimezoneOffset(timezone)
+    return new Date(Date.UTC(this.year, this.month - 1, this.date) + offset)
+  }
+
+  public get weekday(): Weekday {
+    const date = new Date(this.year, this.month - 1, this.date)
+    return date.toLocaleString('en-US', { weekday: 'short' }).toLowerCase() as Weekday
+  }
+
+  public boundaries(timezone: string = 'UTC'): [Date, Date] {
+    const offset = getTimezoneOffset(timezone)
+    const startDateUtc = new Date(Date.UTC(this.year, this.month - 1, this.date))
+    const endDateUtc = new Date(Date.UTC(this.year, this.month - 1, this.date + 1))
+
+    return [
+      new Date(startDateUtc.getTime() - offset),
+      new Date(endDateUtc.getTime() - offset),
+    ]
+  }
+
+  /**
+   * Returns:
+   * - 0 if this day is equal to the other day;
+   * - -1 if this day is before the other day;
+   * -  1 if this day is after the other day.
+   */
+  public compare(other: Day): number {
+    if (this.year !== other.year) {
+      return this.year < other.year ? -1 : 1
+    }
+    if (this.month !== other.month) {
+      return this.month < other.month ? -1 : 1
+    }
+    if (this.date !== other.date) {
+      return this.date < other.date ? -1 : 1
+    }
+    return 0
+  }
+
+  public shift(days: number): Day {
+    const date = this.asDate()
+    date.setDate(date.getDate() + days)
+    return Day.fromDate(date)
+  }
+}
+
 /**
  * Returns the UTC offset for the given timezone in milliseconds.
  *
@@ -28,59 +109,8 @@ export function getTimezoneOffset(tz: string): number {
 }
 
 /**
- * Returns the year, month and day for the given date in the given timezone.
- *
- * Example:
- * ```
- * > getDateDayInTimezone(new Date('2024-03-17T22:03:00Z'), 'Europe/Moscow')
- * { year: 2024, month: 3, day: 18 }
- * ```
+ * Returns the time in format 'HH:MM' for the given date and timezone.
  */
-export function getDateDayInTimezone(date: Date, tz: string): {
-  year: number
-  month: number
-  day: number
-} {
-  const offset = getTimezoneOffset(tz)
-  const dateTz = new Date(date.getTime() + offset)
-  return {
-    year: dateTz.getUTCFullYear(),
-    month: dateTz.getUTCMonth() + 1,
-    day: dateTz.getUTCDate(),
-  }
-}
-
-/**
- * Returns boundaries for the day in the given timezone.
- *
- * Example:
- * ```
- * > getDayBoundaries({ year: 2024, month: 3, day: 17, timezone: 'Europe/Moscow' })
- * ['2024-03-16T21:00:00Z', '2024-03-17T21:00:00Z']
- * ```
- */
-export function getDayBoundaries({
-  year,
-  month,
-  day,
-  timezone = 'UTC',
-}: {
-  year: number
-  month: number
-  day: number
-  timezone?: string
-}): [Date, Date] {
-  const startDateUtc = new Date(Date.UTC(year, month - 1, day))
-  const endDateUtc = new Date(Date.UTC(year, month - 1, day + 1))
-
-  const offset = getTimezoneOffset(timezone)
-
-  const boundaryStart = new Date(startDateUtc.getTime() - offset)
-  const boundaryEnd = new Date(endDateUtc.getTime() - offset)
-
-  return [boundaryStart, boundaryEnd]
-}
-
 export function clockTime(date: Date, timezone?: string): string {
   return date.toLocaleString('en-US', {
     hour: '2-digit',
@@ -88,4 +118,41 @@ export function clockTime(date: Date, timezone?: string): string {
     hour12: false,
     timeZone: timezone,
   })
+}
+
+/**
+ * Returns an array of days that span from the first Monday on or before `from`
+ * to the last Sunday on or after `to`. The array contains `null` for days
+ * outside the range `[from, to]`.
+ */
+export function getSpanningWeeks(from: Day, to: Day): (null | Day)[][] {
+  if (from.compare(to) > 0) {
+    return []
+  }
+
+  let tmp = from
+  while (tmp.weekday !== 'mon') {
+    tmp = tmp.shift(-1)
+  }
+  const firstMon = tmp
+
+  tmp = to
+  while (tmp.weekday !== 'sun') {
+    tmp = tmp.shift(1)
+  }
+  const lastSun = tmp
+
+  const weeks: (null | Day)[][] = []
+  for (let day = firstMon; day.compare(lastSun) <= 0; day = day.shift(1)) {
+    if (day.weekday === 'mon') {
+      weeks.push([])
+    }
+    if (day.compare(from) >= 0 && day.compare(to) <= 0) {
+      weeks[weeks.length - 1].push(day)
+    } else {
+      weeks[weeks.length - 1].push(null)
+    }
+  }
+
+  return weeks
 }

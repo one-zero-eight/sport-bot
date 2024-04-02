@@ -27,6 +27,7 @@ export function createBot({
   plugins.messageSending.install(bot)
   plugins.domain.install(bot, { domain, config })
   plugins.translations.install(bot)
+  plugins.noopButton.install(bot)
 
   bot.use(handlers)
 

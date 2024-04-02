@@ -1,5 +1,6 @@
 import { TIMEZONE } from '~/constants'
 import type { TrainingDetailed } from '~/services/sport/types'
+import type { Weekday } from '~/utils/dates'
 import { clockTime } from '~/utils/dates'
 import { tgxFromHtml } from '~/utils/tgx-from-html'
 
@@ -13,6 +14,18 @@ function dateLong(date: Date): string {
 }
 
 export default {
+  'Weekday.TwoLetters': (weekday: Weekday) => {
+    switch (weekday) {
+      case 'mon': return 'Mo'
+      case 'tue': return 'Tu'
+      case 'wed': return 'We'
+      case 'thu': return 'Th'
+      case 'fri': return 'Fr'
+      case 'sat': return 'Sa'
+      case 'sun': return 'Su'
+    }
+  },
+
   'Buttons.Back': '← Back',
 
   'HowGoodAmI.Thinking': 'Hmm... Let me think 🤔',
@@ -46,13 +59,6 @@ export default {
   'Views.LanguageSettings.Message': 'Which flag do you like more?',
 
   'Views.TrainingsDaysList.Message': 'Choose the date:',
-  'Views.TrainingsDaysList.Buttons.Day': (date: Date) => {
-    const day = date.toLocaleDateString('en-US', { weekday: 'long', timeZone: TIMEZONE })
-    const month = date.toLocaleDateString('en-US', { month: 'long', timeZone: TIMEZONE })
-    const dayOfMonth = date.getDate()
-
-    return `${day}, ${month} ${dayOfMonth}`
-  },
 
   'Views.DayTrainings.Message': 'Choose the class:',
 

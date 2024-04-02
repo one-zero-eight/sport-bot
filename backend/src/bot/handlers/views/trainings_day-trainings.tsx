@@ -4,7 +4,7 @@ import type { View } from '.'
 import views from '.'
 import type { Ctx } from '~/bot/context'
 import { TIMEZONE } from '~/constants'
-import { clockTime, getDateDayInTimezone, getDayBoundaries } from '~/utils/dates'
+import { Day, clockTime } from '~/utils/dates'
 
 const VIEW_ID = 'trainings/day-trainings'
 
@@ -32,19 +32,10 @@ const TrainingButton = makeButton<{
   },
 })
 
-export type Props = {
-  date: Date
-}
+export type Props = { day: Day }
 
-const render: View<Ctx, Props>['render'] = async (ctx, { date }) => {
-  const { year, month, day } = getDateDayInTimezone(date, TIMEZONE)
-  const [from, to] = getDayBoundaries({
-    year: year,
-    month: month,
-    day: day,
-    timezone: TIMEZONE,
-  })
-
+const render: View<Ctx, Props>['render'] = async (ctx, { day }) => {
+  const [from, to] = day.boundaries()
   const trainings = await ctx.domain.getTrainingsForUser({
     telegramId: ctx.from!.id,
     from: from,
@@ -121,7 +112,7 @@ export default {
             ctx.answerCallbackQuery({ text: alertMessage, show_alert: true })
             await ctx
               .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)
-              .to(await render(ctx, { date: training.startsAt }))
+              .to(await render(ctx, { day: Day.fromDate(training.startsAt, TIMEZONE) }))
             break
           }
           case 'cancel-check-in': {
@@ -146,7 +137,7 @@ export default {
             ctx.answerCallbackQuery({ text: alertMessage, show_alert: true })
             await ctx
               .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)
-              .to(await render(ctx, { date: training.startsAt }))
+              .to(await render(ctx, { day: Day.fromDate(training.startsAt, TIMEZONE) }))
             break
           }
           case 'details': {
@@ -158,7 +149,7 @@ export default {
             break
           }
           default:
-            throw new Error(`Invalid action: ${ctx.payload.action}`)
+            throw new Error(`Invalid action: ${ctx.payload.action}.`)
         }
       })
 

@@ -7,13 +7,26 @@ import { tgxFromHtml } from '~/utils/tgx-from-html'
 function dateLong(date: Date): string {
   const day = date.toLocaleDateString('en-US', { weekday: 'long', timeZone: TIMEZONE })
   const month = date.toLocaleDateString('en-US', { month: 'long', timeZone: TIMEZONE })
-  const dayOfMonth = date.getDate()
-  const year = date.getFullYear()
+  const dayOfMonth = date.toLocaleDateString('en-US', { day: 'numeric', timeZone: TIMEZONE })
+  const year = date.toLocaleDateString('en-US', { year: 'numeric', timeZone: TIMEZONE })
 
   return `${day}, ${month} ${dayOfMonth}, ${year}`
 }
 
+function dateAndTimeShort(
+  startsAt: Date,
+  endsAt: Date,
+): string {
+  const weekDayShort = startsAt.toLocaleDateString('en-US', { weekday: 'short', timeZone: TIMEZONE })
+  const monthShort = startsAt.toLocaleDateString('en-US', { month: 'short', timeZone: TIMEZONE })
+  const dayOfMonth = startsAt.toLocaleDateString('en-US', { day: 'numeric', timeZone: TIMEZONE })
+
+  return `${weekDayShort} ${monthShort} ${dayOfMonth}, ${clockTime(startsAt, TIMEZONE)}—${clockTime(endsAt, TIMEZONE)}`
+}
+
 export default {
+  'WelcomeMessage.Unauthorized': 'Welcome to IU Sport Bot.\n\nPlease, login:',
+
   'Weekday.TwoLetters': (weekday: Weekday) => {
     switch (weekday) {
       case 'mon': return 'Mo'
@@ -27,20 +40,21 @@ export default {
   },
 
   'Buttons.Back': '← Back',
+  'Buttons.LoginWithInnohassle': 'Login with InNoHassle',
 
   'HowGoodAmI.Thinking': 'Hmm... Let me think 🤔',
   'HowGoodAmI.Answer': (percent: number) => `You're better than ${percent}% of students!`,
   'HowGoodAmI.Failed': 'I don\'t know 🤷‍♂️',
 
-  'Alert.CheckInSuccessful': (training: TrainingDetailed) => [
-    '✅ Check-in successful',
+  'Alert.CheckInSuccessful': ({ title, startsAt, endsAt }: TrainingDetailed) => [
+    '✅ Check-in successful ✅',
     '',
-    `${training.title} at ${training.startsAt}`,
+    `${title}\n${dateAndTimeShort(startsAt, endsAt)}`,
   ].join('\n'),
-  'Alert.CheckInCancelled': (training: TrainingDetailed) => [
-    '❌ Check-in cancelled',
+  'Alert.CheckInCancelled': ({ title, startsAt, endsAt }: TrainingDetailed) => [
+    '❌ Check-in cancelled ❌',
     '',
-    `${training.title} at ${training.startsAt}`,
+    `${title}\n${dateAndTimeShort(startsAt, endsAt)}`,
   ].join('\n'),
   'Alert.CheckInUnavailable': 'You cannot check-in for this training.',
   'Alert.AlreadyCheckedIn': 'You are already checked in for this training.',
@@ -103,8 +117,4 @@ export default {
   ),
   'Views.Training.Buttons.CheckIn': 'Check-in',
   'Views.Training.Buttons.CancelCheckIn': 'Cancel check-in',
-
-  'InNoHassle.LinkAccountsRequest.Message': 'To use this Telegram bot, please login to InNoHassle with your Telegram account. When you\'re done, send /start to continue!',
-  'InNoHassle.LinkAccountsRequest.Button': 'Login with InNoHassle',
-  'InNoHassle.LinkAccountsRequest.ForwardText': 'Link your Telegram to InNoHassle.',
 }

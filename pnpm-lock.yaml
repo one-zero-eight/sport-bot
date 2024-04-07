@@ -48,14 +48,14 @@ importers:
         specifier: 5.11.0
         version: 5.11.0(prisma@5.11.0)
       '@telegum/grammy-buttons':
-        specifier: ^0.4.0
-        version: 0.4.0(@telegum/tgx@0.1.1)(grammy@1.22.4)
+        specifier: ^0.5.1
+        version: 0.5.1(@telegum/tgx@0.2.1)(grammy@1.22.4)
       '@telegum/grammy-messages':
-        specifier: ^0.4.0
-        version: 0.4.0(@telegum/tgx@0.1.1)(grammy@1.22.4)
+        specifier: ^0.5.1
+        version: 0.5.1(@telegum/tgx@0.2.1)(grammy@1.22.4)
       '@telegum/tgx':
-        specifier: ^0.1.1
-        version: 0.1.1
+        specifier: ^0.2.1
+        version: 0.2.1
       axios:
         specifier: ^1.6.8
         version: 1.6.8
@@ -1343,28 +1343,28 @@ packages:
       - typescript
     dev: true
 
-  /@telegum/grammy-buttons@0.4.0(@telegum/tgx@0.1.1)(grammy@1.22.4):
-    resolution: {integrity: sha512-zQUjwZ5wkxiRC1N22bfhR3jf0v6res758Gw+FMiX21jXszAFUd0lHxXHoFklaxvkzKGCdLsnZih9/kn82jO2DA==}
+  /@telegum/grammy-buttons@0.5.1(@telegum/tgx@0.2.1)(grammy@1.22.4):
+    resolution: {integrity: sha512-EHDyv37fKc4A43kJZuR2KSv0RFrC1sEPxHx5jC83Kqaq2Fe9jyy7W2D0jJG60FysMsjdK/96tzRussUBLnrecQ==}
     peerDependencies:
-      '@telegum/tgx': ^0.1.0
+      '@telegum/tgx': ^0.2.1
       grammy: ^1.22.4
     dependencies:
-      '@telegum/tgx': 0.1.1
+      '@telegum/tgx': 0.2.1
       grammy: 1.22.4
     dev: false
 
-  /@telegum/grammy-messages@0.4.0(@telegum/tgx@0.1.1)(grammy@1.22.4):
-    resolution: {integrity: sha512-XUA77yrstJlmcxWiKDZngdRhBFvtWx2ZJCrF1qtNmKVpdf3pYZ21dqqgs5pRNH/ey3Efv+StXEkogob18rHylA==}
+  /@telegum/grammy-messages@0.5.1(@telegum/tgx@0.2.1)(grammy@1.22.4):
+    resolution: {integrity: sha512-cmCjiACeR5/FadiVtEYwMaJveG/W9VDiXCuHJs6uKCFIFWyf9xRwbn1MlE9tY2Od4z8p+A28pRMvNg3XS/FsUw==}
     peerDependencies:
-      '@telegum/tgx': ^0.1.0
+      '@telegum/tgx': ^0.2.1
       grammy: ^1.22.4
     dependencies:
-      '@telegum/tgx': 0.1.1
+      '@telegum/tgx': 0.2.1
       grammy: 1.22.4
     dev: false
 
-  /@telegum/tgx@0.1.1:
-    resolution: {integrity: sha512-4MKeCaop+Bi7sLefbc1TWxkrFoyINmyUwZjcAVUfmVyRsavt2sV5rXJ4hlnVDVjkUNNjECTNUWp/BhVKn0aJdg==}
+  /@telegum/tgx@0.2.1:
+    resolution: {integrity: sha512-17mhEkEwwH2zIiXRwstfd0BgHOYCvwmGzqXAtrYtn5cVbFc+hzMAyDOzudtGO9SgNsJvr4rtWyuLV4Yfubh0RA==}
     dev: false
 
   /@tufjs/canonical-json@2.0.0:

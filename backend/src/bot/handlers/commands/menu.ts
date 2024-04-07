@@ -4,7 +4,7 @@ import views from '~/bot/handlers/views'
 
 export default handler((composer) => {
   composer
-    .command('start')
+    .command('menu')
     .filter(filters.pm)
     .use(async (ctx) => {
       await ctx

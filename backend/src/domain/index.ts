@@ -142,6 +142,10 @@ export class Domain {
     })
   }
 
+  public async isUserAuthorized(telegramId: number): Promise<boolean> {
+    return !!(await this.getUserSportData(telegramId))
+  }
+
   private async requestSport<M extends keyof SportClient>(
     telegramId: number,
     method: M,

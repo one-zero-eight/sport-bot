@@ -87,7 +87,9 @@ export default {
   'Views.Main.Message': 'Hi! Here is a list of actions:',
   'Views.Main.Buttons.Settings': '⚙️ Settings',
   'Views.Main.Buttons.Trainings': '⛹️ Classes',
-  'Views.Main.Buttons.Semesters': '📆 Semesters',
+  'Views.Main.Buttons.Semesters': '📊 Semesters',
+  'Views.Main.Buttons.Website': '🌐 Website',
+  'Views.Main.Buttons.Calendar': '📆 Calendar',
 
   'Views.Settings.Message': 'A list of configurable things:',
   'Views.Settings.Buttons.Language': '🌐 Language',

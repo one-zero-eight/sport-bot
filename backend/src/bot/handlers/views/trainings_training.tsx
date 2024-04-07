@@ -77,7 +77,7 @@ export default {
           trainingId: ctx.payload.trainingId,
         })
         ctx.answerCallbackQuery({
-          text: 'Checked-in',
+          text: ctx.t['Alert.CheckInSuccessfulText'],
           show_alert: true,
         })
 
@@ -95,7 +95,7 @@ export default {
           trainingId: ctx.payload.trainingId,
         })
         ctx.answerCallbackQuery({
-          text: 'Cancelled check-in',
+          text: ctx.t['Alert.CheckInCancelledText'],
           show_alert: true,
         })
 

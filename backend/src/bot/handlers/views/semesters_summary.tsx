@@ -11,31 +11,9 @@ const BackButton = makeButton({ id: `${VIEW_ID}:back` })
 export default {
   render: async (ctx) => {
     const semesters = await ctx.domain.getSemestersSummary({ telegramId: ctx.from!.id })
-
     return (
       <>
-        <b>Semesters history</b>
-        <br />
-        <br />
-        {semesters.map(({ title, hoursTotal, fitnessTest }) => (
-          <>
-            {ctx.t.BeautifulSemesterTitle(title)}
-            <br />
-            {(hoursTotal != null) && (
-              <>
-                {`• ${hoursTotal} hours`}
-                <br />
-              </>
-            )}
-            {fitnessTest && (
-              <>
-                {`• Fitness test: ${fitnessTest.pointsTotal} points (${fitnessTest.passed ? 'passed' : 'not passed'})`}
-                <br />
-              </>
-            )}
-            <br />
-          </>
-        ))}
+        {ctx.t['Views.SemestersSummary.SummaryMessage'](semesters)}
         <keyboard>
           <BackButton>{ctx.t['Buttons.Back']}</BackButton>
         </keyboard>

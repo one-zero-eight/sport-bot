@@ -1,4 +1,6 @@
+import { pluralize } from './utils'
 import { TIMEZONE } from '~/constants'
+import type { SemesterSummary } from '~/domain/types'
 import type { TrainingDetailed } from '~/services/sport/types'
 import type { Weekday } from '~/utils/dates'
 import { clockTime } from '~/utils/dates'
@@ -22,6 +24,19 @@ function dateAndTimeShort(
   const dayOfMonth = startsAt.toLocaleDateString('en-US', { day: 'numeric', timeZone: TIMEZONE })
 
   return `${weekDayShort} ${monthShort} ${dayOfMonth}, ${clockTime(startsAt, TIMEZONE)}—${clockTime(endsAt, TIMEZONE)}`
+}
+
+function beautifulSemesterTitle(raw: string): string {
+  const match = raw.toLowerCase().match(/^([sf]|sum)(\d{2})$/i)
+  if (!match) {
+    return raw
+  }
+
+  const [, season, year] = match
+  const seasonName = season === 's' ? 'Spring' : season === 'f' ? 'Fall' : 'Summer'
+  const emoji = season === 's' ? '🌷' : season === 'f' ? '🍂' : '☀️'
+  const formattedYear = `20${year}`
+  return `${seasonName} ${formattedYear} ${emoji}`
 }
 
 const INSPIRING_QUOTES = [
@@ -72,12 +87,14 @@ export default {
   'HowGoodAmI.Answer': (percent: number) => `You're better than ${percent}% of students!`,
   'HowGoodAmI.Failed': 'I don\'t know 🤷‍♂️',
 
+  'Alert.CheckInSuccessfulText': 'Check-in successful.',
   'Alert.CheckInSuccessful': ({ title, startsAt, endsAt }: TrainingDetailed) => [
     'Check-in successful.',
     '',
     title,
     dateAndTimeShort(startsAt, endsAt),
   ].join('\n'),
+  'Alert.CheckInCancelledText': 'Check-in cancelled.',
   'Alert.CheckInCancelled': ({ title, startsAt, endsAt }: TrainingDetailed) => [
     'Check-in cancelled.',
     '',
@@ -104,7 +121,7 @@ export default {
         <>
           <b>Your progress:</b>
           <br />
-          {`🎉 ${earned} hours out of ${required}${debt ? `+${debt} (debt)` : ''} 🎉`}
+          {`🎉 ${earned} ${pluralize(earned, 'hour', 'hours', 'hours')} out of ${required}${debt ? `+${debt} (debt)` : ''} 🎉`}
         </>
       )
     } else {
@@ -112,7 +129,7 @@ export default {
         <>
           <b>Your progress:</b>
           <br />
-          {`${earned} hours out of ${required}${debt ? `+${debt} (debt)` : ''}`}
+          {`${earned} ${pluralize(earned, 'hour', 'hours', 'hours')} out of ${required}${debt ? `+${debt} (debt)` : ''}`}
           <br />
           <blockquote>{INSPIRING_QUOTES[Math.floor(Math.random() * INSPIRING_QUOTES.length)]}</blockquote>
         </>
@@ -172,7 +189,34 @@ export default {
   'Views.Training.Buttons.CheckIn': 'Check-in',
   'Views.Training.Buttons.CancelCheckIn': 'Cancel check-in',
 
-  'Weekday.TwoLetters': (weekday: Weekday) => {
+  'Views.SemestersSummary.SummaryMessage': (semesters: SemesterSummary[]) => (
+    <>
+      <b>Semesters history</b>
+      <br />
+      <br />
+      {semesters.map(({ title, hoursTotal, fitnessTest }) => (
+        <>
+          {beautifulSemesterTitle(title)}
+          <br />
+          {(hoursTotal != null) && (
+            <>
+              {`• ${hoursTotal} ${pluralize(hoursTotal, 'hour', 'hours', 'hours')}`}
+              <br />
+            </>
+          )}
+          {fitnessTest && (
+            <>
+              {`• Fitness test: ${fitnessTest.pointsTotal} ${pluralize(fitnessTest.pointsTotal, 'point', 'points', 'points')} (${fitnessTest.passed ? 'passed' : 'not passed'})`}
+              <br />
+            </>
+          )}
+          <br />
+        </>
+      ))}
+    </>
+  ),
+
+  'Weekday.TwoLetters': (weekday: Weekday): string => {
     switch (weekday) {
       case 'mon': return 'Mo'
       case 'tue': return 'Tu'
@@ -182,18 +226,5 @@ export default {
       case 'sat': return 'Sa'
       case 'sun': return 'Su'
     }
-  },
-
-  'BeautifulSemesterTitle': (raw: string) => {
-    const match = raw.toLowerCase().match(/^([sf]|sum)(\d{2})$/i)
-    if (!match) {
-      return raw
-    }
-
-    const [, season, year] = match
-    const seasonName = season === 's' ? 'Spring' : season === 'f' ? 'Fall' : 'Summer'
-    const emoji = season === 's' ? '🌷' : season === 'f' ? '🍂' : '☀️'
-    const formattedYear = `20${year}`
-    return `${seasonName} ${formattedYear} ${emoji}`
   },
 }

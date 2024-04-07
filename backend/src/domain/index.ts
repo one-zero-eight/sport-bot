@@ -138,26 +138,26 @@ export class Domain {
       ...sportHours.last_semesters_hours,
     ]
 
-    return semesters.map(({ id, name }) => {
-      const semesterSportHours = allSportHours.find(h => h.id_sem === id)
-      const semesterFitnessTest = allFitnessTests.find(t => t.semester === name)
+    return semesters
+      .sort((a, b) => b.id - a.id)
+      .map(({ id, name }) => {
+        const hours = allSportHours.find(h => h.id_sem === id)
+        const fitTest = allFitnessTests.find(t => t.semester === name)
 
-      return {
-        title: name,
-        hoursTotal: semesterSportHours
-          ? (semesterSportHours.hours_not_self + semesterSportHours.hours_self_not_debt)
-          : 0,
-        fitnessTest: semesterFitnessTest
-          ? {
-              passed: semesterFitnessTest.grade,
-              pointsTotal: semesterFitnessTest.total_score,
-            }
-          : {
-              passed: false,
-              pointsTotal: 0,
-            },
-      }
-    })
+        return {
+          title: name,
+          hoursTotal: hours
+            ? (hours.hours_not_self + hours.hours_self_debt + hours.hours_self_not_debt)
+            : undefined,
+          fitnessTest: fitTest
+            ? {
+                passed: fitTest.grade,
+                pointsTotal: fitTest.total_score,
+              }
+            : undefined,
+        }
+      })
+      .filter(({ hoursTotal, fitnessTest }) => !!hoursTotal || !!fitnessTest)
   }
 
   private async requestSport<M extends keyof SportClient>(

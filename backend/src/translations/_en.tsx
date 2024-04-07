@@ -85,16 +85,10 @@ export default {
   'Alert.CancelCheckInError': 'Error occurred during check-in cancellation.',
 
   'Views.Main.Message': 'Hi! Here is a list of actions:',
-  'Views.Main.Buttons.Settings': '⚙️ Settings',
   'Views.Main.Buttons.Trainings': '⛹️ Classes',
   'Views.Main.Buttons.Semesters': '📊 Semesters',
   'Views.Main.Buttons.Website': '🌐 Website',
   'Views.Main.Buttons.Calendar': '📆 Calendar',
-
-  'Views.Settings.Message': 'A list of configurable things:',
-  'Views.Settings.Buttons.Language': '🌐 Language',
-
-  'Views.LanguageSettings.Message': 'Which flag do you like more?',
 
   'Views.TrainingsDaysList.Message': 'Choose the date:',
 

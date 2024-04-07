@@ -157,7 +157,7 @@ export class Domain {
             : undefined,
         }
       })
-      .filter(({ hoursTotal, fitnessTest }) => !!hoursTotal || !!fitnessTest)
+      .filter(({ hoursTotal, fitnessTest }) => hoursTotal != null || fitnessTest != null)
   }
 
   private async requestSport<M extends keyof SportClient>(

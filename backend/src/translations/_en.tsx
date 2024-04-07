@@ -24,6 +24,12 @@ function dateAndTimeShort(
   return `${weekDayShort} ${monthShort} ${dayOfMonth}, ${clockTime(startsAt, TIMEZONE)}—${clockTime(endsAt, TIMEZONE)}`
 }
 
+const INSPIRING_QUOTES = [
+  'The only bad workout is the one that didn\'t happen.',
+  'The only way to finish is to start.',
+  'The only limit is the one you set yourself.',
+]
+
 export default {
   'Messages.WelcomeUnauthorized': (
     <>
@@ -84,11 +90,41 @@ export default {
   'Alert.CheckInError': 'Error occurred during check-in.',
   'Alert.CancelCheckInError': 'Error occurred during check-in cancellation.',
 
-  'Views.Main.Message': 'Hi! Here is a list of actions:',
+  'Views.Main.Message': ({
+    earned,
+    required,
+    debt,
+  }: {
+    earned: number // earned w/o debt
+    required: number // required w/o debt
+    debt: number
+  }) => {
+    if (earned >= required + debt) {
+      return (
+        <>
+          <b>Your progress:</b>
+          <br />
+          {`🎉 ${earned} hours out of ${required}${debt ? `+${debt} (debt)` : ''} 🎉`}
+        </>
+      )
+    } else {
+      return (
+        <>
+          <b>Your progress:</b>
+          <br />
+          {`${earned} hours out of ${required}${debt ? `+${debt} (debt)` : ''}`}
+          <br />
+          <blockquote>{INSPIRING_QUOTES[Math.floor(Math.random() * INSPIRING_QUOTES.length)]}</blockquote>
+        </>
+      )
+    }
+  },
+  'Views.Main.Buttons.Refresh': '🔄 Refresh',
   'Views.Main.Buttons.Trainings': '⛹️ Classes',
   'Views.Main.Buttons.Semesters': '📊 Semesters',
   'Views.Main.Buttons.Website': '🌐 Website',
   'Views.Main.Buttons.Calendar': '📆 Calendar',
+  'Views.Main.Alerts.Refreshed': 'Refreshed!',
 
   'Views.TrainingsDaysList.Message': 'Choose the date:',
 

@@ -70,10 +70,10 @@ export default {
     composer
       .filter(BackButton.filter)
       .use(async (ctx) => {
-        ctx.answerCallbackQuery()
         await ctx
           .edit(ctx.from.id, ctx.msg!.message_id)
           .to(await views.main.render(ctx, {}))
+        ctx.answerCallbackQuery()
       })
 
     return composer.middleware()

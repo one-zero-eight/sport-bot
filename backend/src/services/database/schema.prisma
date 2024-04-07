@@ -14,8 +14,4 @@ model User {
   username   String?
   firstName  String
   lastName   String?
-
-  // Interface language user prefers as ISO 639-1 language code
-  // or null if user did not specify it.
-  language String?
 }

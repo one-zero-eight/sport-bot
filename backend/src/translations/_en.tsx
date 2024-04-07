@@ -25,36 +25,58 @@ function dateAndTimeShort(
 }
 
 export default {
-  'WelcomeMessage.Unauthorized': 'Welcome to IU Sport Bot.\n\nPlease, login:',
-
-  'Weekday.TwoLetters': (weekday: Weekday) => {
-    switch (weekday) {
-      case 'mon': return 'Mo'
-      case 'tue': return 'Tu'
-      case 'wed': return 'We'
-      case 'thu': return 'Th'
-      case 'fri': return 'Fr'
-      case 'sat': return 'Sa'
-      case 'sun': return 'Su'
-    }
-  },
+  'Messages.WelcomeUnauthorized': (
+    <>
+      <b>Welcome to IU Sport Bot! 💪</b>
+      <br />
+      <br />
+      I can help you check the schedule of classes, check-in for them, and track your progress.
+      <br />
+      <br />
+      To start using the bot, please, log in with your InNoHassle account.
+    </>
+  ),
+  'Messages.Help': (
+    <>
+      This bot can help you check the schedule of classes, check-in for them, and track your progress.
+      <br />
+      <br />
+      <b>Commands:</b>
+      <br />
+      /menu — show main menu with actions
+      <br />
+      /help — show this message
+      <br />
+      <br />
+      If you've found a bug or have a suggestion, you can open an issue in the
+      {' '}
+      <a href="https://github.com/one-zero-eight/sport-bot">GitHub repository</a>
+      {' '}
+      — contributions are welcome! If you have something to say, you can contact the maintainer: @evermake.
+      <br />
+      <br />
+      <i>with 💜 by @one_zero_eight</i>
+    </>
+  ),
 
   'Buttons.Back': '← Back',
-  'Buttons.LoginWithInnohassle': 'Login with InNoHassle',
+  'Buttons.LoginWithInnohassle': 'Log in with InNoHassle',
 
   'HowGoodAmI.Thinking': 'Hmm... Let me think 🤔',
   'HowGoodAmI.Answer': (percent: number) => `You're better than ${percent}% of students!`,
   'HowGoodAmI.Failed': 'I don\'t know 🤷‍♂️',
 
   'Alert.CheckInSuccessful': ({ title, startsAt, endsAt }: TrainingDetailed) => [
-    '✅ Check-in successful ✅',
+    'Check-in successful.',
     '',
-    `${title}\n${dateAndTimeShort(startsAt, endsAt)}`,
+    title,
+    dateAndTimeShort(startsAt, endsAt),
   ].join('\n'),
   'Alert.CheckInCancelled': ({ title, startsAt, endsAt }: TrainingDetailed) => [
-    '❌ Check-in cancelled ❌',
+    'Check-in cancelled.',
     '',
-    `${title}\n${dateAndTimeShort(startsAt, endsAt)}`,
+    title,
+    dateAndTimeShort(startsAt, endsAt),
   ].join('\n'),
   'Alert.CheckInUnavailable': 'You cannot check-in for this training.',
   'Alert.AlreadyCheckedIn': 'You are already checked in for this training.',
@@ -117,4 +139,16 @@ export default {
   ),
   'Views.Training.Buttons.CheckIn': 'Check-in',
   'Views.Training.Buttons.CancelCheckIn': 'Cancel check-in',
+
+  'Weekday.TwoLetters': (weekday: Weekday) => {
+    switch (weekday) {
+      case 'mon': return 'Mo'
+      case 'tue': return 'Tu'
+      case 'wed': return 'We'
+      case 'thu': return 'Th'
+      case 'fri': return 'Fr'
+      case 'sat': return 'Sa'
+      case 'sun': return 'Su'
+    }
+  },
 }

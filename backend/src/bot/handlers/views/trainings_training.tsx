@@ -83,6 +83,7 @@ export default {
 
         await ctx
           .edit(ctx.from.id, ctx.msg!.message_id)
+          .with({ ignoreNotModifiedError: true })
           .to(await views.trainingsDayTrainings.render(ctx, { day: ctx.payload.day }))
       })
 
@@ -100,6 +101,7 @@ export default {
 
         await ctx
           .edit(ctx.from.id, ctx.msg!.message_id)
+          .with({ ignoreNotModifiedError: true })
           .to(await views.trainingsDayTrainings.render(ctx, { day: ctx.payload.day }))
       })
 
@@ -108,6 +110,7 @@ export default {
       .use(async (ctx) => {
         await ctx
           .edit(ctx.from.id, ctx.msg!.message_id)
+          .with({ ignoreNotModifiedError: true })
           .to(await views.trainingsDayTrainings.render(ctx, ctx.payload))
         ctx.answerCallbackQuery()
       })

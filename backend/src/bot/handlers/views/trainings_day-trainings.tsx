@@ -112,6 +112,7 @@ export default {
             ctx.answerCallbackQuery({ text: alertMessage, show_alert: true })
             await ctx
               .edit(ctx.from.id, ctx.msg!.message_id)
+              .with({ ignoreNotModifiedError: true })
               .to(await render(ctx, { day: Day.fromDate(training.startsAt, TIMEZONE) }))
             break
           }
@@ -137,6 +138,7 @@ export default {
             ctx.answerCallbackQuery({ text: alertMessage, show_alert: true })
             await ctx
               .edit(ctx.from.id, ctx.msg!.message_id)
+              .with({ ignoreNotModifiedError: true })
               .to(await render(ctx, { day: Day.fromDate(training.startsAt, TIMEZONE) }))
             break
           }
@@ -145,6 +147,7 @@ export default {
             ctx.answerCallbackQuery()
             await ctx
               .edit(ctx.from.id, ctx.msg!.message_id)
+              .with({ ignoreNotModifiedError: true })
               .to(await views.trainingsTraining.render(ctx, { training }))
             break
           }
@@ -158,6 +161,7 @@ export default {
       .use(async (ctx) => {
         await ctx
           .edit(ctx.from.id, ctx.msg!.message_id)
+          .with({ ignoreNotModifiedError: true })
           .to(await views.trainingsDaysList.render(ctx, {}))
         ctx.answerCallbackQuery()
       })

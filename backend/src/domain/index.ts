@@ -144,10 +144,22 @@ export class Domain {
         const hours = allSportHours.find(h => h.id_sem === id)
         const fitTest = allFitnessTests.find(t => t.semester === name)
 
+        let hasSomeHours = hours != null && (
+          hours.hours_not_self !== 0
+          || hours.hours_self_not_debt !== 0
+          || hours.hours_self_debt !== 0
+          || hours.debt !== 0
+        )
+        if (!hasSomeHours && id === sportHours.ongoing_semester.id_sem) {
+          hasSomeHours = true
+        }
+
         return {
           title: name,
-          hoursTotal: hours
-            ? (hours.hours_not_self + hours.hours_self_debt + hours.hours_self_not_debt)
+          hoursTotal: hasSomeHours
+            ? hours
+              ? (hours.hours_not_self + hours.hours_self_debt + hours.hours_self_not_debt)
+              : 0
             : undefined,
           fitnessTest: fitTest
             ? {

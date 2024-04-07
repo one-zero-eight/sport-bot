@@ -41,7 +41,7 @@ export default {
       .use(async (ctx) => {
         ctx.answerCallbackQuery()
         await ctx
-          .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)
+          .edit(ctx.from.id, ctx.msg!.message_id)
           .to(await views.main.render(ctx, {}))
       })
 

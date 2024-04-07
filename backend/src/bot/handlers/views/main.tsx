@@ -29,7 +29,7 @@ export default {
       .filter(SettingsButton.filter)
       .use(async (ctx) => {
         await ctx
-          .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)
+          .edit(ctx.from.id, ctx.msg!.message_id)
           .to(await views.settings.render(ctx, {}))
         ctx.answerCallbackQuery()
       })
@@ -38,7 +38,7 @@ export default {
       .filter(TrainingsButton.filter)
       .use(async (ctx) => {
         await ctx
-          .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)
+          .edit(ctx.from.id, ctx.msg!.message_id)
           .to(await views.trainingsDaysList.render(ctx, {}))
         ctx.answerCallbackQuery()
       })
@@ -47,7 +47,7 @@ export default {
       .filter(SemestersButton.filter)
       .use(async (ctx) => {
         await ctx
-          .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)
+          .edit(ctx.from.id, ctx.msg!.message_id)
           .to(await views.semestersSummary.render(ctx, {}))
         ctx.answerCallbackQuery()
       })

@@ -38,7 +38,7 @@ export default {
         ctx.updateLanguage(ctx.payload.lang)
         ctx.answerCallbackQuery()
         await ctx
-          .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)
+          .edit(ctx.from.id, ctx.msg!.message_id)
           .to(await views.settings.render(ctx, {}))
       })
 
@@ -47,7 +47,7 @@ export default {
       .use(async (ctx) => {
         ctx.answerCallbackQuery()
         await ctx
-          .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)
+          .edit(ctx.from.id, ctx.msg!.message_id)
           .to(await views.settings.render(ctx, {}))
       })
 

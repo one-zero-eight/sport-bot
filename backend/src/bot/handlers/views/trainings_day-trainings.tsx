@@ -111,7 +111,7 @@ export default {
             }
             ctx.answerCallbackQuery({ text: alertMessage, show_alert: true })
             await ctx
-              .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)
+              .edit(ctx.from.id, ctx.msg!.message_id)
               .to(await render(ctx, { day: Day.fromDate(training.startsAt, TIMEZONE) }))
             break
           }
@@ -136,7 +136,7 @@ export default {
             }
             ctx.answerCallbackQuery({ text: alertMessage, show_alert: true })
             await ctx
-              .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)
+              .edit(ctx.from.id, ctx.msg!.message_id)
               .to(await render(ctx, { day: Day.fromDate(training.startsAt, TIMEZONE) }))
             break
           }
@@ -144,7 +144,7 @@ export default {
             const training = await ctx.domain.getTrainingForUser({ telegramId, trainingId })
             ctx.answerCallbackQuery()
             await ctx
-              .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)
+              .edit(ctx.from.id, ctx.msg!.message_id)
               .to(await views.trainingsTraining.render(ctx, { training }))
             break
           }
@@ -157,7 +157,7 @@ export default {
       .filter(BackButton.filter)
       .use(async (ctx) => {
         await ctx
-          .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)
+          .edit(ctx.from.id, ctx.msg!.message_id)
           .to(await views.trainingsDaysList.render(ctx, {}))
         ctx.answerCallbackQuery()
       })

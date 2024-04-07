@@ -82,7 +82,7 @@ export default {
         })
 
         await ctx
-          .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)
+          .edit(ctx.from.id, ctx.msg!.message_id)
           .to(await views.trainingsDayTrainings.render(ctx, { day: ctx.payload.day }))
       })
 
@@ -99,7 +99,7 @@ export default {
         })
 
         await ctx
-          .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)
+          .edit(ctx.from.id, ctx.msg!.message_id)
           .to(await views.trainingsDayTrainings.render(ctx, { day: ctx.payload.day }))
       })
 
@@ -107,7 +107,7 @@ export default {
       .filter(BackButton.filter)
       .use(async (ctx) => {
         await ctx
-          .edit(ctx.chat!.id, ctx.callbackQuery.message!.message_id)
+          .edit(ctx.from.id, ctx.msg!.message_id)
           .to(await views.trainingsDayTrainings.render(ctx, ctx.payload))
         ctx.answerCallbackQuery()
       })

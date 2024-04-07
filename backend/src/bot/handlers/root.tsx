@@ -33,5 +33,7 @@ export default handler((composer) => {
   composer.use(views.semestersSummary)
 
   composer.use(commands.start)
+  composer.use(commands.menu)
+  composer.use(commands.help)
   composer.use(commands.howgoodami)
 })

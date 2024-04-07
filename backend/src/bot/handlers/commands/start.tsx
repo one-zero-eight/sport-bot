@@ -9,6 +9,7 @@ export default handler((composer) => {
     .command('start')
     .filter(filters.pm)
     .use(async (ctx) => {
+      ctx.replyWithChatAction('typing')
       let authorized
       try {
         authorized = await ctx.domain.isUserAuthorized(ctx.from.id)
@@ -30,7 +31,7 @@ export default handler((composer) => {
       } else {
         content = (
           <>
-            {ctx.t['WelcomeMessage.Unauthorized']}
+            {ctx.t['Messages.WelcomeUnauthorized']}
             <keyboard>
               <InnohassleLoginButton
                 loginUrl={ctx.config.innohassle.telegramLoginUrl}

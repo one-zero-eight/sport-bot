@@ -54,6 +54,24 @@ export class Domain {
     return User.parse(user)
   }
 
+  public async isUserAuthorized(telegramId: number): Promise<boolean> {
+    return !!(await this.getUserSportData(telegramId))
+  }
+
+  public async getOngoingSemesterHoursForUser(telegramId: number): Promise<{
+    earned: number
+    required: number
+    debt: number
+  }> {
+    const { ongoing_semester: sem } = await this.requestSport(telegramId, 'getSportHoursInfo')
+    return {
+      // @see SWP_sport_back/adminpage/api/crud/crud_attendance.py
+      earned: sem.hours_not_self + sem.hours_self_not_debt + sem.hours_self_debt,
+      required: sem.hours_sem_max,
+      debt: sem.debt,
+    }
+  }
+
   public async getStudentBetterThanPercent({
     telegramId,
   }: {
@@ -140,10 +158,6 @@ export class Domain {
             },
       }
     })
-  }
-
-  public async isUserAuthorized(telegramId: number): Promise<boolean> {
-    return !!(await this.getUserSportData(telegramId))
   }
 
   private async requestSport<M extends keyof SportClient>(

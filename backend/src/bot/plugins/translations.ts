@@ -9,7 +9,7 @@ export type TranslationsFlavor = {
 
 export const install: InstallFn<TranslationsFlavor & DomainFlavor> = (bot) => {
   bot.use((ctx, next) => {
-    ctx.t = translations[ctx.user?.language as Language] ?? translations.en
+    ctx.t = translations[ctx.from?.language_code as Language] ?? translations.en
     return next()
   })
 }

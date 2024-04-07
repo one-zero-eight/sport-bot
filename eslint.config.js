@@ -8,21 +8,24 @@ export default antfu(
       jsx: true,
       semi: false,
     },
+
     formatters: { markdown: 'dprint' },
 
     typescript: true,
+    jsx: true,
     test: true,
-    jsonc: true,
+
     yaml: true,
     markdown: true,
-    vue: true,
-    jsx: true,
-
-    gitignore: false,
+    jsonc: true,
     toml: false,
-    unocss: false,
+    gitignore: false,
+
+    vue: false,
     react: false,
     svelte: false,
+
+    unocss: false,
 
     ignores: [
       'backend/src/services/database/generated-prisma-client/**',

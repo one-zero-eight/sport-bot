@@ -9,7 +9,7 @@
     "lint:fix": "eslint --fix .",
     "test": "vitest",
     "deps": "taze -wIr",
-    "release": "bumpp -r package.json backend/package.json mini-app/package.json",
+    "release": "bumpp -r package.json backend/package.json",
     "prepare": "simple-git-hooks"
   },
   "devDependencies": {

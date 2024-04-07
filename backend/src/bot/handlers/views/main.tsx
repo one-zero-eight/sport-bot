@@ -15,10 +15,13 @@ export default {
     <>
       {ctx.t['Views.Main.Message']}
       <keyboard>
-        <SettingsButton>{ctx.t['Views.Main.Buttons.Settings']}</SettingsButton>
         <TrainingsButton>{ctx.t['Views.Main.Buttons.Trainings']}</TrainingsButton>
-        <br />
         <SemestersButton>{ctx.t['Views.Main.Buttons.Semesters']}</SemestersButton>
+        <br />
+        <button url="https://innohassle.ru/sport">{ctx.t['Views.Main.Buttons.Calendar']}</button>
+        <button url="https://sport.innopolis.university">{ctx.t['Views.Main.Buttons.Website']}</button>
+        <br />
+        <SettingsButton>{ctx.t['Views.Main.Buttons.Settings']}</SettingsButton>
       </keyboard>
     </>
   ),

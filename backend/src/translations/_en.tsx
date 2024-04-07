@@ -183,4 +183,17 @@ export default {
       case 'sun': return 'Su'
     }
   },
+
+  'BeautifulSemesterTitle': (raw: string) => {
+    const match = raw.toLowerCase().match(/^([sf]|sum)(\d{2})$/i)
+    if (!match) {
+      return raw
+    }
+
+    const [, season, year] = match
+    const seasonName = season === 's' ? 'Spring' : season === 'f' ? 'Fall' : 'Summer'
+    const emoji = season === 's' ? '🌷' : season === 'f' ? '🍂' : '☀️'
+    const formattedYear = `20${year}`
+    return `${seasonName} ${formattedYear} ${emoji}`
+  },
 }

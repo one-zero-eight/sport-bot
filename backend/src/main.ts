@@ -22,7 +22,7 @@ async function main() {
   if (options.setMy) {
     await setMy()
   } else {
-    runBot()
+    await runBot()
   }
 }
 

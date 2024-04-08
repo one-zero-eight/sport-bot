@@ -46,6 +46,13 @@ const INSPIRING_QUOTES = [
 ]
 
 export default {
+  'Bot.Commands': {
+    menu: 'send main menu',
+    help: 'about this bot',
+  },
+  'Bot.About': 'I help Innopolis University students to track their sports progress, check-in for training classes and export personal calendar.',
+  'Bot.Bio': 'Easy sports management for Innopolis University students.\n\ngithub.com/one-zero-eight/sport-bot',
+
   'Messages.WelcomeUnauthorized': (
     <>
       <b>Welcome to IU Sport Bot! 💪</b>

@@ -12,4 +12,4 @@ COPY ./backend ./backend
 
 RUN pnpm run -C backend prisma:generate
 
-CMD ["pnpm", "run", "-C", "backend", "start"]
+CMD ["pnpm", "run", "-C", "backend", "start:set-my"]

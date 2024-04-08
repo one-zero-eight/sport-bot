@@ -13,17 +13,23 @@ import translations from './translations'
 
 async function main() {
   program
-    .option('--set-my', 'Only call bot\'s `setMy...` methods.', false)
+    .option('--set-my', 'Call bot\'s `setMy...` methods before starting.', false)
+    .option('--set-my-only', 'Only call bot\'s `setMy...` methods without starting bot.', false)
 
   program.parse()
 
   const options = program.opts()
 
+  if (options.setMyOnly) {
+    await setMy()
+    return
+  }
+
   if (options.setMy) {
     await setMy()
-  } else {
-    await runBot()
   }
+
+  await runBot()
 }
 
 async function setMy() {

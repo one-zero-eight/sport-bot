@@ -15,7 +15,7 @@ import translations from './translations'
 
 async function main() {
   program
-    .option('--set-my', 'Call bot\'s `setMy...` methods before starting.', false)
+    .option('--set-my', 'Call bot\'s `setMy...` methods before starting the bot.', false)
     .option('--set-my-only', 'Only call bot\'s `setMy...` methods without starting the bot.', false)
 
   program.parse()

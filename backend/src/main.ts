@@ -2,7 +2,9 @@ import process from 'node:process'
 import { program } from 'commander'
 import { run } from '@grammyjs/runner'
 import { Bot } from 'grammy'
+import type { Config } from './config'
 import { loadConfigFromEnv } from './config'
+import type { Logger } from './utils/logging'
 import { createLogger } from './utils/logging'
 import { createBot } from './bot'
 import { Domain } from './domain'
@@ -14,31 +16,35 @@ import translations from './translations'
 async function main() {
   program
     .option('--set-my', 'Call bot\'s `setMy...` methods before starting.', false)
-    .option('--set-my-only', 'Only call bot\'s `setMy...` methods without starting bot.', false)
+    .option('--set-my-only', 'Only call bot\'s `setMy...` methods without starting the bot.', false)
 
   program.parse()
 
   const options = program.opts()
-
-  if (options.setMyOnly) {
-    await setMy()
-    return
-  }
-
-  if (options.setMy) {
-    await setMy()
-  }
-
-  await runBot()
-}
-
-async function setMy() {
   const config = loadConfigFromEnv()
   const logger = createLogger(
     config.environment === 'development'
       ? { level: 'debug', pretty: true }
       : { level: 'info', pretty: false },
   )
+
+  if (options.setMyOnly) {
+    await setMy(config, logger)
+    return
+  }
+
+  if (options.setMy) {
+    try {
+      await setMy(config, logger)
+    } catch (err) {
+      console.warn('Error calling \'setMy...\' methods:', err)
+    }
+  }
+
+  await runBot(config, logger)
+}
+
+async function setMy(config: Config, logger: Logger) {
   const bot = new Bot(config.bot.token)
 
   logger.info('setMyCommands(default)...')
@@ -64,14 +70,7 @@ async function setMy() {
   }
 }
 
-async function runBot() {
-  const config = loadConfigFromEnv()
-  const logger = createLogger(
-    config.environment === 'development'
-      ? { level: 'debug', pretty: true }
-      : { level: 'info', pretty: false },
-  )
-
+async function runBot(config: Config, logger: Logger) {
   const db = await createDatabase({
     logger: logger.child({ tag: 'database' }),
     connectionUrl: config.postgresUrl,

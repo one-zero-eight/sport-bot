@@ -1,5 +1,5 @@
 import type { ErrorHandler } from 'grammy'
-import { BotError, GrammyError, HttpError } from 'grammy'
+import { GrammyError, HttpError } from 'grammy'
 import type { Ctx } from './context'
 
 /**
@@ -13,7 +13,7 @@ export const handleError: ErrorHandler<Ctx> = (e) => {
     msg = 'Bot API request failed'
   } else if (error instanceof HttpError) {
     msg = 'network error'
-  } else if (error instanceof BotError) {
+  } else {
     msg = 'error in middleware'
   }
   ctx.logger.error({

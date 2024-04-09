@@ -86,6 +86,7 @@ export default {
       <i>with 💜 by @one_zero_eight</i>
     </>
   ),
+  'Messages.LoginRequired': 'To use the bot, you first need to log in with your InNoHassle account.',
 
   'Buttons.Back': '← Back',
   'Buttons.LoginWithInnohassle': 'Log in with InNoHassle',

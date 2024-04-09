@@ -95,6 +95,7 @@ export default {
       <i>с 💜 от @one_zero_eight</i>
     </>
   ),
+  'Messages.LoginRequired': 'Чтобы использовать бота, нужно авторизоваться с твоим InNoHassle аккаунтом.',
 
   'Buttons.Back': '← Назад',
   'Buttons.LoginWithInnohassle': 'Войти через InNoHassle',

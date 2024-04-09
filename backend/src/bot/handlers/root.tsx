@@ -10,15 +10,20 @@ export default handler((composer) => {
       const ctx = err.ctx
       await ctx
         .send(
-          <InnohassleLoginButton
-            loginUrl={ctx.config.innohassle.telegramLoginUrl}
-            loginBotUsername={ctx.config.innohassle.telegramBotUsername}
-            returnBotUsername={ctx.me.username}
-          >
-            {ctx.t['Buttons.LoginWithInnohassle']}
-          </InnohassleLoginButton>,
+          <>
+            {ctx.t['Messages.LoginRequired']}
+            <keyboard>
+              <InnohassleLoginButton
+                loginUrl={ctx.config.innohassle.telegramLoginUrl}
+                loginBotUsername={ctx.config.innohassle.telegramBotUsername}
+                returnBotUsername={ctx.me.username}
+              >
+                {ctx.t['Buttons.LoginWithInnohassle']}
+              </InnohassleLoginButton>
+            </keyboard>
+          </>,
         )
-        .to(ctx.chat!.id)
+        .to(ctx.chat?.id ?? ctx.from!.id)
     } else {
       throw err.error
     }

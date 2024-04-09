@@ -98,8 +98,8 @@ export class SportClient extends ApiClient {
       title: t.title,
       startsAt: t.start,
       endsAt: t.end,
-      checkedIn: t.extendedProps.checked_in,
-      checkInAvailable: t.extendedProps.can_check_in,
+      checkedIn: t.extendedProps.checked_in ?? false,
+      checkInAvailable: t.extendedProps.can_check_in ?? false,
     }))
   }
 
@@ -116,8 +116,8 @@ export class SportClient extends ApiClient {
       endsAt: raw.training.end,
       description: raw.training.group.sport.description,
       accredited: raw.training.group.accredited,
-      checkedIn: raw.checked_in,
-      checkInAvailable: raw.can_check_in,
+      checkedIn: raw.checked_in ?? false,
+      checkInAvailable: raw.can_check_in ?? false,
       location: raw.training.place,
       teachers: raw.training.group.teachers.map(t => ({
         id: t.id,

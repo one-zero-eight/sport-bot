@@ -1,13 +1,13 @@
-# IU Sport Bot
+# [@IUSportBot](https://t.me/IUSportBot)
 
 > More convenient way to use [InnoSport](https://sport.innopolis.university/profile/) with some extra features.
 
 ## Features
 
-- 🔑 Login once and use forever (until graduation)
-- 🕑 Track your sport hours
-- 🏄‍♂️ Easily check-in for classes
-- 📆 Export your personal sport calendar with [InNoHassle](https://innohassle.ru/sport)
+🔑 Login once and use forever (until graduation)<br/>
+🕑 Track your sport hours<br/>
+🏄‍♂️ Easily check-in for classes<br/>
+📆 Export your personal sport calendar with [InNoHassle](https://innohassle.ru/sport)<br/>
 
 ## Stack
 

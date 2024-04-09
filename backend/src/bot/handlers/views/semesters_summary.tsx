@@ -28,6 +28,7 @@ export default {
       .use(async (ctx) => {
         await ctx
           .edit(ctx.from.id, ctx.msg!.message_id)
+          .with({ ignoreNotModifiedError: true })
           .to(await views.main.render(ctx, {}))
         ctx.answerCallbackQuery()
       })

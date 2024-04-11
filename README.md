@@ -8,6 +8,7 @@
 🕑 Track your sport hours<br/>
 🏄‍♂️ Easily check-in for classes<br/>
 📆 Export your personal sport calendar with [InNoHassle](https://innohassle.ru/sport)<br/>
+🌐 Bot speaks English and Russian<br/>
 
 ## Stack
 

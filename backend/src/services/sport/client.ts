@@ -98,6 +98,7 @@ export class SportClient extends ApiClient {
       title: t.title,
       startsAt: t.start,
       endsAt: t.end,
+      groupId: t.extendedProps.group_id,
       checkedIn: t.extendedProps.checked_in ?? false,
       checkInAvailable: t.extendedProps.can_check_in ?? false,
     }))
@@ -119,6 +120,7 @@ export class SportClient extends ApiClient {
       checkedIn: raw.checked_in ?? false,
       checkInAvailable: raw.can_check_in ?? false,
       location: raw.training.place,
+      groupId: raw.training.group.id,
       teachers: raw.training.group.teachers.map(t => ({
         id: t.id,
         firstName: t.first_name,

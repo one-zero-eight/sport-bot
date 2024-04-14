@@ -1,5 +1,6 @@
 import commands from './commands'
 import views from './views'
+import fallbackCallbackQueryHandler from './fallback-callback-query'
 import { handler } from '.'
 import { TelegramNotLinkedToInnohassleAccountError } from '~/domain/errors'
 import { InnohassleLoginButton } from '~/bot/login-button'
@@ -38,4 +39,6 @@ export default handler((composer) => {
   composer.use(commands.menu)
   composer.use(commands.help)
   composer.use(commands.howgoodami)
+
+  composer.use(fallbackCallbackQueryHandler)
 })

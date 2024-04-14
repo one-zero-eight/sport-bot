@@ -19,6 +19,8 @@ export const handleError: ErrorHandler<Ctx> = (e) => {
   ctx.logger.error({
     msg: msg,
     update: ctx.update,
+    message: e.message,
+    stack: e.stack,
     error: error,
   })
 }

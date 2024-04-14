@@ -72,11 +72,7 @@ export class Domain {
     }
   }
 
-  public async getStudentBetterThanPercent({
-    telegramId,
-  }: {
-    telegramId: number
-  }) {
+  public getStudentBetterThanPercent(telegramId: number) {
     return this.requestSport(telegramId, 'getBetterThanPercent')
   }
 
@@ -88,11 +84,13 @@ export class Domain {
     telegramId: number
     from: Date
     to: Date
-  }) {
-    return this.requestSport(telegramId, 'getTrainings', { from, to })
+  }): Promise<TrainingInfo[]> {
+    const trainings = await this.requestSport(telegramId, 'getTrainings', { from, to })
+    trainings.sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime())
+    return trainings
   }
 
-  public async getTrainingForUser({
+  public getTrainingForUser({
     telegramId,
     trainingId,
   }: {
@@ -122,11 +120,7 @@ export class Domain {
     return this.requestSport(telegramId, 'cancelCheckInForTraining', trainingId)
   }
 
-  public async getSemestersSummary({
-    telegramId,
-  }: {
-    telegramId: number
-  }): Promise<SemesterSummary[]> {
+  public async getSemestersSummary(telegramId: number): Promise<SemesterSummary[]> {
     const [semesters, sportHours, allFitnessTests] = await Promise.all([
       this.requestSport(telegramId, 'getAllSemesters'),
       this.requestSport(telegramId, 'getSportHoursInfo'),
@@ -172,7 +166,7 @@ export class Domain {
       .filter(({ hoursTotal, fitnessTest }) => hoursTotal != null || fitnessTest != null)
   }
 
-  private async requestSport<M extends keyof SportClient>(
+  private requestSport<M extends keyof SportClient>(
     telegramId: number,
     method: M,
     ...params: Parameters<SportClient[M]>

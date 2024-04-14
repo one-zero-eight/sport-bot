@@ -6,5 +6,6 @@ export const User = z.object({
   username: z.string().nullable(),
   firstName: z.string(),
   lastName: z.string().nullable(),
+  favoriteGroupIds: z.array(z.number()),
 })
 export type User = z.infer<typeof User>

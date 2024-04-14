@@ -1,5 +1,3 @@
-export type Weekday = 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun'
-
 export class Day {
   constructor(public year: number, public month: number, public date: number) {}
 
@@ -32,14 +30,13 @@ export class Day {
     }`
   }
 
+  /**
+   * Returns a new `Date` object for this day with the time set
+   * to `00:00:00.000` in the given timezone.
+   */
   public asDate(timezone: string = 'UTC'): Date {
     const offset = getTimezoneOffset(timezone)
     return new Date(Date.UTC(this.year, this.month - 1, this.date) + offset)
-  }
-
-  public get weekday(): Weekday {
-    const date = new Date(this.year, this.month - 1, this.date)
-    return date.toLocaleString('en-US', { weekday: 'short' }).toLowerCase() as Weekday
   }
 
   public boundaries(timezone: string = 'UTC'): [Date, Date] {
@@ -76,6 +73,14 @@ export class Day {
     const date = this.asDate()
     date.setDate(date.getDate() + days)
     return Day.fromDate(date)
+  }
+
+  public until(end: Day): Day[] {
+    const days = []
+    for (let day = this as Day; day.compare(end) <= 0; day = day.shift(1)) {
+      days.push(day)
+    }
+    return days
   }
 }
 
@@ -118,41 +123,4 @@ export function clockTime(date: Date, timezone?: string): string {
     hour12: false,
     timeZone: timezone,
   })
-}
-
-/**
- * Returns an array of days that span from the first Monday on or before `from`
- * to the last Sunday on or after `to`. The array contains `null` for days
- * outside the range `[from, to]`.
- */
-export function getSpanningWeeks(from: Day, to: Day): (null | Day)[][] {
-  if (from.compare(to) > 0) {
-    return []
-  }
-
-  let tmp = from
-  while (tmp.weekday !== 'mon') {
-    tmp = tmp.shift(-1)
-  }
-  const firstMon = tmp
-
-  tmp = to
-  while (tmp.weekday !== 'sun') {
-    tmp = tmp.shift(1)
-  }
-  const lastSun = tmp
-
-  const weeks: (null | Day)[][] = []
-  for (let day = firstMon; day.compare(lastSun) <= 0; day = day.shift(1)) {
-    if (day.weekday === 'mon') {
-      weeks.push([])
-    }
-    if (day.compare(from) >= 0 && day.compare(to) <= 0) {
-      weeks[weeks.length - 1].push(day)
-    } else {
-      weeks[weeks.length - 1].push(null)
-    }
-  }
-
-  return weeks
 }

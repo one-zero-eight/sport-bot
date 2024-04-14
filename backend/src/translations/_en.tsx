@@ -2,7 +2,7 @@ import { pluralize } from './utils'
 import { TIMEZONE } from '~/constants'
 import type { SemesterSummary } from '~/domain/types'
 import type { TrainingDetailed } from '~/services/sport/types'
-import type { Weekday } from '~/utils/dates'
+import type { Day } from '~/utils/dates'
 import { clockTime } from '~/utils/dates'
 import { tgxFromHtml } from '~/utils/tgx-from-html'
 
@@ -145,15 +145,22 @@ export default {
     }
   },
   'Views.Main.Buttons.Refresh': '🔄 Refresh',
-  'Views.Main.Buttons.Trainings': '⛹️ Classes',
+  'Views.Main.Buttons.TrainingsMy': '⭐️ My classes',
+  'Views.Main.Buttons.TrainingsAll': '⛹️ All classes',
   'Views.Main.Buttons.Semesters': '📊 Semesters',
+  'Views.Main.Buttons.Calendar': '📆 Personal calendar',
   'Views.Main.Buttons.Website': '🌐 Website',
-  'Views.Main.Buttons.Calendar': '📆 Calendar',
   'Views.Main.Alerts.Refreshed': 'Refreshed!',
 
-  'Views.TrainingsDaysList.Message': 'Choose the date:',
-
-  'Views.DayTrainings.Message': 'Choose the class:',
+  'Views.Trainings.Buttons.Day': (day: Day) => {
+    const dayOfWeek = day.asDate(TIMEZONE).toLocaleDateString('en-US', { weekday: 'long', timeZone: TIMEZONE })
+    const month = day.asDate(TIMEZONE).toLocaleDateString('en-US', { month: 'long', timeZone: TIMEZONE })
+    const dayOfMonth = day.asDate(TIMEZONE).toLocaleDateString('en-US', { day: 'numeric', timeZone: TIMEZONE })
+    return `${dayOfWeek}, ${month} ${dayOfMonth}`
+  },
+  'Views.Trainings.Messages.AllClasses': 'Here is a list of all classes for the upcoming week:',
+  'Views.Trainings.Messages.NoMyClasses': 'You have no favorite or checked-in classes for the upcoming week.',
+  'Views.Trainings.Messages.MyClasses': 'Your favorite and checked-in classes for the upcoming week:',
 
   'Views.Training.Message': ({
     title,
@@ -196,6 +203,10 @@ export default {
   ),
   'Views.Training.Buttons.CheckIn': 'Check-in',
   'Views.Training.Buttons.CancelCheckIn': 'Cancel check-in',
+  'Views.Training.Buttons.AddToFavorites': '⭐️ Add to favorites',
+  'Views.Training.Buttons.RemoveFromFavorites': '⭐️ Remove from favorites',
+  'Views.Training.Alerts.AddedToFavorites': (title: string) => `"${title}" is now a favorite.`,
+  'Views.Training.Alerts.RemovedFromFavorites': (title: string) => `"${title}" is no longer a favorite.`,
 
   'Views.SemestersSummary.SummaryMessage': (semesters: SemesterSummary[]) => (
     <>
@@ -223,16 +234,4 @@ export default {
       ))}
     </>
   ),
-
-  'Weekday.TwoLetters': (weekday: Weekday): string => {
-    switch (weekday) {
-      case 'mon': return 'Mo'
-      case 'tue': return 'Tu'
-      case 'wed': return 'We'
-      case 'thu': return 'Th'
-      case 'fri': return 'Fr'
-      case 'sat': return 'Sa'
-      case 'sun': return 'Su'
-    }
-  },
 }

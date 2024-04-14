@@ -6,6 +6,7 @@ import type { Logger } from '~/utils/logging'
 import type { Database } from '~/services/database'
 import type { SportClient } from '~/services/sport'
 import type { InnohassleClient } from '~/services/innohassle'
+import type { TrainingInfo } from '~/services/sport/types'
 
 export class Domain {
   private logger: Logger
@@ -100,14 +101,34 @@ export class Domain {
     return this.requestSport(telegramId, 'getTraining', trainingId)
   }
 
-  public checkInUserForTraining({
+  public async checkInUserForTraining({
     telegramId,
     trainingId,
   }: {
     telegramId: number
     trainingId: number
   }) {
-    return this.requestSport(telegramId, 'checkInForTraining', trainingId)
+    const training = await this.requestSport(telegramId, 'getTraining', trainingId)
+    let result
+    if (training.checkedIn) {
+      result = 'already-checked-in' as const
+    } else if (!training.checkInAvailable) {
+      result = 'check-in-unavailable' as const
+    } else {
+      try {
+        await this.requestSport(telegramId, 'checkInForTraining', trainingId)
+        result = 'checked-in' as const
+      } catch (error) {
+        this.logger.error({
+          msg: 'failed to check-in a user',
+          error: error,
+          telegramId: telegramId,
+          trainingId: trainingId,
+        })
+        result = 'failed' as const
+      }
+    }
+    return { type: result, training: training }
   }
 
   public async cancelCheckInUserForTraining({
@@ -117,7 +138,25 @@ export class Domain {
     telegramId: number
     trainingId: number
   }) {
-    return this.requestSport(telegramId, 'cancelCheckInForTraining', trainingId)
+    const training = await this.requestSport(telegramId, 'getTraining', trainingId)
+    let result
+    if (!training.checkedIn) {
+      result = 'not-checked-in' as const
+    } else {
+      try {
+        await this.requestSport(telegramId, 'cancelCheckInForTraining', trainingId)
+        result = 'cancelled' as const
+      } catch (error) {
+        this.logger.error({
+          msg: 'failed to cancel check-in for a user',
+          error: error,
+          telegramId: telegramId,
+          trainingId: trainingId,
+        })
+        result = 'failed' as const
+      }
+    }
+    return { type: result, training: training }
   }
 
   public async getSemestersSummary(telegramId: number): Promise<SemesterSummary[]> {

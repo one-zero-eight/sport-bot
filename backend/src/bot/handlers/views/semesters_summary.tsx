@@ -1,14 +1,12 @@
-import { Composer } from 'grammy'
 import { makeButton } from '@telegum/grammy-buttons'
-import type { View } from '.'
 import views from '.'
-import type { Ctx } from '~/bot/context'
+import { makeView } from '~/bot/utils/view'
 
 const VIEW_ID = 'semesters/summary'
 
 const BackButton = makeButton({ id: `${VIEW_ID}:back` })
 
-export default {
+export default makeView({
   render: async (ctx) => {
     const semesters = await ctx.domain.getSemestersSummary(ctx.from!.id)
     return (
@@ -20,9 +18,7 @@ export default {
       </>
     )
   },
-  middleware: () => {
-    const composer = new Composer<Ctx>()
-
+  setup: (composer) => {
     composer
       .filter(BackButton.filter)
       .use(async (ctx) => {
@@ -35,4 +31,4 @@ export default {
 
     return composer.middleware()
   },
-} satisfies View<Ctx> as View<Ctx>
+})

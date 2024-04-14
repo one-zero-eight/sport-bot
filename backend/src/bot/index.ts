@@ -22,6 +22,7 @@ export function createBot({
 
   bot.catch(handleError)
 
+  plugins.safeCallbackQueries.install(bot)
   plugins.logging.install(bot, { logger })
   plugins.floodControl.install(bot)
   plugins.messageSending.install(bot)

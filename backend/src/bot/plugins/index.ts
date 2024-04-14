@@ -5,6 +5,7 @@ import * as messageSending from './message-sending'
 import * as domain from './domain'
 import * as translations from './translations'
 import * as noopButton from './noop-button'
+import * as safeCallbackQueries from './safe-callback-queries'
 
 // eslint-disable-next-line ts/ban-types
 export type InstallFn<F = {}, O = undefined> =
@@ -19,4 +20,5 @@ export default {
   domain,
   translations,
   noopButton,
+  safeCallbackQueries,
 }

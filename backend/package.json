@@ -1,7 +1,7 @@
 {
   "name": "iu-sport-bot-backend",
   "type": "module",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "scripts": {
     "dev": "tsx --watch ./src/main.ts",
     "start": "tsx ./src/main.ts",

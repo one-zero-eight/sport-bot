@@ -98,8 +98,6 @@ async function runBot(config: Config, logger: Logger) {
   await bot.init()
   logger.info({ msg: `Starting bot https://t.me/${bot.botInfo.username}` })
 
-  await bot.api.answerCallbackQuery('12345')
-
   const runner = run(bot)
 
   const stop = () => {

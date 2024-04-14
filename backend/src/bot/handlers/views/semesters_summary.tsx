@@ -10,7 +10,7 @@ const BackButton = makeButton({ id: `${VIEW_ID}:back` })
 
 export default {
   render: async (ctx) => {
-    const semesters = await ctx.domain.getSemestersSummary({ telegramId: ctx.from!.id })
+    const semesters = await ctx.domain.getSemestersSummary(ctx.from!.id)
     return (
       <>
         {ctx.t['Views.SemestersSummary.SummaryMessage'](semesters)}

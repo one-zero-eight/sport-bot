@@ -10,7 +10,7 @@ export default handler((composer) => {
 
       await ctx.reply(ctx.t['HowGoodAmI.Thinking'])
 
-      ctx.domain.getStudentBetterThanPercent(ctx.user)
+      ctx.domain.getStudentBetterThanPercent(ctx.user.telegramId)
         .then((percent) => {
           ctx.api.sendMessage(
             ctx.chat.id,

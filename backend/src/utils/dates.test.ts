@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest'
-import type { Weekday } from './dates'
 import { Day, getTimezoneOffset } from './dates'
 
 describe('getTimezoneOffset', () => {
@@ -48,37 +47,6 @@ describe('day', () => {
 
     date = Day.fromString('2024-03-17').asDate('Europe/Moscow')
     expect(date.toISOString()).toBe('2024-03-17T03:00:00.000Z')
-  })
-
-  it('returns correct weekday', () => {
-    const testcases: [string, Weekday][] = [
-      ['2024-01-01', 'mon'],
-      ['2024-01-02', 'tue'],
-      ['2024-01-03', 'wed'],
-      ['2024-01-04', 'thu'],
-      ['2024-01-05', 'fri'],
-      ['2024-01-06', 'sat'],
-      ['2024-01-07', 'sun'],
-
-      ['2024-04-01', 'mon'],
-      ['2024-04-02', 'tue'],
-      ['2024-04-03', 'wed'],
-      ['2024-04-04', 'thu'],
-      ['2024-04-05', 'fri'],
-      ['2024-04-06', 'sat'],
-      ['2024-04-07', 'sun'],
-
-      ['2024-12-30', 'mon'],
-      ['2024-12-31', 'tue'],
-      ['2025-01-01', 'wed'],
-      ['2025-01-02', 'thu'],
-      ['2025-01-03', 'fri'],
-      ['2025-01-04', 'sat'],
-      ['2025-01-05', 'sun'],
-    ]
-    for (const [dateStr, weekday] of testcases) {
-      expect(Day.fromString(dateStr).weekday).toBe(weekday)
-    }
   })
 
   it('shifts correctly', () => {

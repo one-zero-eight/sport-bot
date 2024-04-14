@@ -2,10 +2,10 @@ import { pluralize } from './utils'
 import type { Translation } from '.'
 import { TIMEZONE } from '~/constants'
 import type { TrainingDetailed } from '~/services/sport/types'
-import type { Weekday } from '~/utils/dates'
 import { clockTime } from '~/utils/dates'
 import { tgxFromHtml } from '~/utils/tgx-from-html'
 import type { SemesterSummary } from '~/domain/types'
+import { capitalize } from '~/utils/strings'
 
 function dateLong(date: Date): string {
   const weekDayShort = date.toLocaleDateString('ru-RU', { weekday: 'long', timeZone: TIMEZONE })
@@ -154,15 +154,26 @@ export default {
     }
   },
   'Views.Main.Buttons.Refresh': '🔄 Обновить',
-  'Views.Main.Buttons.Trainings': '⛹️ Занятия',
+  'Views.Main.Buttons.TrainingsMy': '⭐️ Мои занятия',
+  'Views.Main.Buttons.TrainingsAll': '⛹️ Все занятия',
   'Views.Main.Buttons.Semesters': '📊 Семестры',
+  'Views.Main.Buttons.Calendar': '📆 Личный календарь',
   'Views.Main.Buttons.Website': '🌐 Сайт',
-  'Views.Main.Buttons.Calendar': '📆 Календарь',
   'Views.Main.Alerts.Refreshed': 'Обновлено!',
 
-  'Views.TrainingsDaysList.Message': 'Выбери дату:',
-
-  'Views.DayTrainings.Message': 'Выбери занятие:',
+  'Views.Trainings.Buttons.Day': (day) => {
+    return capitalize(
+      day.asDate(TIMEZONE).toLocaleDateString('ru-RU', {
+        day: 'numeric',
+        month: 'long',
+        weekday: 'long',
+        timeZone: TIMEZONE,
+      }),
+    )
+  },
+  'Views.Trainings.Messages.AllClasses': 'Список всех занятий на ближайшую неделю:',
+  'Views.Trainings.Messages.NoMyClasses': 'На ближайшую неделю нет избранных занятий и записей.',
+  'Views.Trainings.Messages.MyClasses': 'Список избранных занятий и записей на ближайшую неделю:',
 
   'Views.Training.Message': ({
     title,
@@ -205,6 +216,10 @@ export default {
   ),
   'Views.Training.Buttons.CheckIn': 'Записаться',
   'Views.Training.Buttons.CancelCheckIn': 'Отменить запись',
+  'Views.Training.Buttons.AddToFavorites': '⭐️ Добавить в избранное',
+  'Views.Training.Buttons.RemoveFromFavorites': '⭐️ Убрать из избранного',
+  'Views.Training.Alerts.AddedToFavorites': (title: string) => `"${title}" теперь в избранном.`,
+  'Views.Training.Alerts.RemovedFromFavorites': (title: string) => `"${title}" больше не в избранном.`,
 
   'Views.SemestersSummary.SummaryMessage': (semesters: SemesterSummary[]) => (
     <>
@@ -232,16 +247,4 @@ export default {
       ))}
     </>
   ),
-
-  'Weekday.TwoLetters': (weekday: Weekday) => {
-    switch (weekday) {
-      case 'mon': return 'Пн'
-      case 'tue': return 'Вт'
-      case 'wed': return 'Ср'
-      case 'thu': return 'Чт'
-      case 'fri': return 'Пт'
-      case 'sat': return 'Сб'
-      case 'sun': return 'Вс'
-    }
-  },
 } satisfies Translation

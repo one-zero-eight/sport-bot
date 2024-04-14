@@ -10,6 +10,7 @@ export type TrainingInfo = {
   title: string
   startsAt: Date
   endsAt: Date
+  groupId: number
   checkedIn: boolean
   checkInAvailable: boolean
 }
@@ -23,6 +24,7 @@ export type TrainingDetailed = {
   accredited: boolean
   checkedIn: boolean
   checkInAvailable: boolean
+  groupId: number
   location: string
   teachers: {
     id: number

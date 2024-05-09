@@ -59,10 +59,8 @@ function createAxiosWithLogging({
       logger.debug({
         msg: 'API request initiated',
         config: {
-          auth: config.auth,
           baseURL: config.baseURL,
           data: config.data,
-          headers: config.headers,
           url: config.url,
           params: config.params,
         },

@@ -1,6 +1,6 @@
 import type { z } from 'zod'
 import axios from 'axios'
-import type { AxiosInstance } from 'axios'
+import type { AxiosError, AxiosInstance } from 'axios'
 import type { Logger } from './logging'
 
 export class ApiClient {
@@ -36,11 +36,22 @@ export class ApiClient {
       queryParams,
       ...rest
     } = options
-    const response = await this.axios.request({
-      url: path,
-      params: queryParams,
-      ...rest,
-    })
+
+    let response
+
+    try {
+      response = await this.axios.request({
+        url: path,
+        params: queryParams,
+        ...rest,
+      })
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        throw new RequestFailedError(err)
+      }
+      throw err
+    }
+
     return responseSchema.parse(response.data)
   }
 }
@@ -80,14 +91,17 @@ function createAxiosWithLogging({
       })
       return response
     },
-    (error) => {
-      logger.error({
-        msg: 'API request failed',
-        error: error,
-      })
-      return Promise.reject(error)
-    },
   )
 
   return instance
+}
+
+export class RequestFailedError extends Error {
+  status: number | undefined
+
+  constructor(axiosError: AxiosError) {
+    super(axiosError.message, { cause: axiosError })
+    this.name = 'RequestFailedError'
+    this.status = axiosError.status
+  }
 }

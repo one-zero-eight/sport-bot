@@ -9,7 +9,7 @@ export default handler((composer) => {
     .command('start')
     .filter(filters.pm)
     .use(async (ctx) => {
-      ctx.replyWithChatAction('typing')
+      await ctx.replyWithChatAction('typing')
       let authorized
       try {
         authorized = await ctx.domain.isUserAuthorized(ctx.from.id)

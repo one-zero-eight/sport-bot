@@ -11,7 +11,9 @@ import { Domain } from './domain'
 import { createDatabase } from './services/database'
 import { SportClient } from './services/sport'
 import { InnohassleClient } from './services/innohassle'
+import type { Language, Translation } from './translations'
 import translations from './translations'
+import { DEFAULT_LANGUAGE } from './constants'
 
 async function main() {
   program
@@ -47,26 +49,31 @@ async function main() {
 async function setMy(config: Config, logger: Logger) {
   const bot = new Bot(config.bot.token)
 
-  logger.info('setMyCommands(default)...')
-  await bot.api.setMyCommands(
-    Object.entries(translations.en['Bot.Commands']).map(([command, description]) => ({ command, description })),
-    { scope: { type: 'all_private_chats' } },
-  )
-  logger.info('setMyDescription(default)...')
-  await bot.api.setMyDescription(translations.en['Bot.About'])
-  logger.info('setMyShortDescription(default)...')
-  await bot.api.setMyShortDescription(translations.en['Bot.Bio'])
+  for (const [language, translation] of (Object.entries(translations) as [Language, Translation][])) {
+    const commands = Object
+      .entries(translation['Bot.Commands'])
+      .map(([command, description]) => ({ command, description }))
+    const intro = translation['Bot.Intro']
+    const bio = translation['Bot.Bio']
 
-  for (const [language, translation] of Object.entries(translations).filter(([lang]) => lang !== 'en')) {
-    logger.info(`setMyCommands(${language})...`)
-    await bot.api.setMyCommands(
-      Object.entries(translation['Bot.Commands']).map(([command, description]) => ({ command, description })),
-      { scope: { type: 'all_private_chats' }, language_code: language },
-    )
-    logger.info(`setMyDescription(${language})...`)
-    await bot.api.setMyDescription(translation['Bot.About'], { language_code: language })
-    logger.info(`setMyShortDescription(${language})...`)
-    await bot.api.setMyShortDescription(translation['Bot.Bio'], { language_code: language })
+    const languageLogLabel = language === DEFAULT_LANGUAGE
+      ? `default=${language}`
+      : language
+    const languageCode = language === DEFAULT_LANGUAGE
+      ? language
+      : undefined // Need to not specify the language code for the default language.
+
+    logger.info(`setMyCommands(${languageLogLabel})...`)
+    await bot.api.setMyCommands(commands, {
+      scope: { type: 'all_private_chats' },
+      language_code: languageCode,
+    })
+
+    logger.info(`setMyDescription(${languageLogLabel})...`)
+    await bot.api.setMyDescription(intro, { language_code: languageCode })
+
+    logger.info(`setMyShortDescription(${languageLogLabel})...`)
+    await bot.api.setMyShortDescription(bio, { language_code: languageCode })
   }
 }
 

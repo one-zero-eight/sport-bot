@@ -20,21 +20,21 @@
     "@telegum/grammy-buttons": "^0.5.1",
     "@telegum/grammy-messages": "^0.5.1",
     "@telegum/tgx": "^0.2.1",
-    "axios": "^1.6.8",
-    "commander": "^12.0.0",
+    "axios": "^1.7.2",
+    "commander": "^12.1.0",
     "dotenv": "^16.4.5",
-    "grammy": "^1.22.4",
-    "jsdom": "^24.0.0",
+    "grammy": "^1.25.1",
+    "jsdom": "^24.1.0",
     "lodash": "^4.17.21",
-    "pino": "^8.20.0",
+    "pino": "^8.21.0",
     "pino-pretty": "^10.3.1",
-    "zod": "^3.22.4"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/jsdom": "^21.1.6",
-    "@types/lodash": "^4.17.0",
-    "@types/node": "^20.12.5",
+    "@types/jsdom": "^21.1.7",
+    "@types/lodash": "^4.17.5",
+    "@types/node": "^20.14.8",
     "prisma": "5.11.0",
-    "typescript": "^5.4.4"
+    "typescript": "^5.5.2"
   }
 }

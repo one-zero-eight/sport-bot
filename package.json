@@ -3,7 +3,7 @@
   "type": "module",
   "version": "1.1.0",
   "private": true,
-  "packageManager": "pnpm@8.15.6",
+  "packageManager": "pnpm@9.4.0",
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
@@ -13,15 +13,15 @@
     "prepare": "simple-git-hooks"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.12.2",
-    "bumpp": "^9.4.0",
-    "eslint": "^8.57.0",
-    "eslint-plugin-format": "^0.1.0",
-    "lint-staged": "^15.2.2",
+    "@antfu/eslint-config": "^2.21.1",
+    "bumpp": "^9.4.1",
+    "eslint": "^9.5.0",
+    "eslint-plugin-format": "^0.1.2",
+    "lint-staged": "^15.2.7",
     "simple-git-hooks": "^2.11.1",
-    "taze": "^0.13.3",
-    "tsx": "^4.7.2",
-    "vitest": "^1.4.0"
+    "taze": "^0.13.8",
+    "tsx": "^4.15.7",
+    "vitest": "^1.6.0"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"

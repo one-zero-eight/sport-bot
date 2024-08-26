@@ -10,13 +10,14 @@ services:
       context: .
       dockerfile: bot.Dockerfile
     depends_on:
+      # Wait for the database to be ready before starting the application
       db:
-        # Wait for the database to be ready before starting the application
         condition: service_healthy
+      # Wait for the Prisma migrate to apply migrations
       prisma-migrate:
         condition: service_completed_successfully
     restart: always
-    env_file: .env # Set bot settings in .env file
+    env_file: .env.bot
 
   prisma-migrate:
     build: # See bot.Dockerfile for more details
@@ -27,7 +28,7 @@ services:
         # Wait for the database to be ready before starting the application
         condition: service_healthy
     restart: no
-    env_file: .env # Set bot settings in .env file
+    env_file: .env.bot
     command: pnpm run -C ./backend prisma:migrations:apply
 
   db:
@@ -39,8 +40,8 @@ services:
     volumes:
       - "postgres:/var/lib/postgresql/data"
     ports:
-      - "5432:5432"
-    env_file: .env # Set POSTGRES_PASSWORD in .env file
+      - '5432:5432'
+    env_file: .env.db
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 5s

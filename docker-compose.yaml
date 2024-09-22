@@ -4,8 +4,6 @@
 # Run all services:
 # docker compose up --build --detach
 
-version: '3'
-
 services:
   bot:
     build: # See bot.Dockerfile for more details
@@ -15,22 +13,36 @@ services:
       db:
         # Wait for the database to be ready before starting the application
         condition: service_healthy
+      prisma-migrate:
+        condition: service_completed_successfully
     restart: always
     env_file: .env # Set bot settings in .env file
 
+  prisma-migrate:
+    build: # See bot.Dockerfile for more details
+      context: .
+      dockerfile: bot.Dockerfile
+    depends_on:
+      db:
+        # Wait for the database to be ready before starting the application
+        condition: service_healthy
+    restart: no
+    env_file: .env # Set bot settings in .env file
+    command: pnpm run -C ./backend prisma:migrations:apply
+
   db:
     # See more: https://hub.docker.com/_/postgres
-    image: 'postgres:16.2'
+    image: "postgres:16.2"
     restart: always
     # The commits were slow on our servers, so we turned off the synchronous_commit
     command: postgres -c synchronous_commit=off
     volumes:
-      - 'postgres:/var/lib/postgresql/data'
+      - "postgres:/var/lib/postgresql/data"
     ports:
-      - '5432:5432'
+      - "5432:5432"
     env_file: .env # Set POSTGRES_PASSWORD in .env file
     healthcheck:
-      test: [CMD-SHELL, pg_isready -U postgres]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 5s
       timeout: 5s
       retries: 5

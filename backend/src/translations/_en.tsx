@@ -23,7 +23,7 @@ function dateAndTimeShort(
   const monthShort = startsAt.toLocaleDateString('en-US', { month: 'short', timeZone: TIMEZONE })
   const dayOfMonth = startsAt.toLocaleDateString('en-US', { day: 'numeric', timeZone: TIMEZONE })
 
-  return `${weekDayShort} ${monthShort} ${dayOfMonth}, ${clockTime(startsAt, TIMEZONE)}—${clockTime(endsAt, TIMEZONE)}`
+  return `${weekDayShort} ${monthShort} ${dayOfMonth}, ${clockTime(startsAt, TIMEZONE)}–${clockTime(endsAt, TIMEZONE)}`
 }
 
 function beautifulSemesterTitle(raw: string): string {
@@ -180,7 +180,7 @@ export default {
       {dateLong(startsAt)}
       <br />
       <b>Time: </b>
-      {`${clockTime(startsAt, TIMEZONE)}—${clockTime(endsAt, TIMEZONE)}`}
+      {`${clockTime(startsAt, TIMEZONE)}–${clockTime(endsAt, TIMEZONE)}`}
       <br />
       <b>Accreditted: </b>
       {accredited ? 'Yes' : 'No'}

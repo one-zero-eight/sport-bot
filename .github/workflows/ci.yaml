@@ -30,9 +30,12 @@ jobs:
         id: dependencies
         run: pnpm install
 
+      - name: Generate Prisma client code
+        run: cd backend && pnpm run prisma:generate
+
       - name: Typecheck
         if: '!cancelled()'
-        run: pnpm run -r typecheck
+        run: cd backend && pnpm run typecheck
 
       - name: Lint
         if: '!cancelled()'

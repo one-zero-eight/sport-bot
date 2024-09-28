@@ -33,17 +33,17 @@ services:
 
   db:
     # See more: https://hub.docker.com/_/postgres
-    image: "postgres:16.2"
+    image: 'postgres:16.2'
     restart: always
     # The commits were slow on our servers, so we turned off the synchronous_commit
     command: postgres -c synchronous_commit=off
     volumes:
-      - "postgres:/var/lib/postgresql/data"
+      - 'postgres:/var/lib/postgresql/data'
     ports:
       - '5432:5432'
     env_file: .env.db
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      test: [CMD-SHELL, pg_isready -U postgres]
       interval: 5s
       timeout: 5s
       retries: 5

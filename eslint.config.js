@@ -1,3 +1,4 @@
+// @ts-check
 import antfu from '@antfu/eslint-config'
 
 export default antfu(
@@ -9,26 +10,21 @@ export default antfu(
       semi: false,
     },
 
-    formatters: { markdown: 'dprint' },
-
     typescript: true,
     jsx: true,
     test: true,
-
     yaml: true,
     markdown: true,
     jsonc: true,
-    toml: false,
-    gitignore: false,
+    gitignore: true,
 
-    vue: false,
-    react: false,
-    svelte: false,
-
-    unocss: false,
+    formatters: {
+      markdown: 'dprint',
+    },
 
     ignores: [
       'backend/src/services/database/generated-prisma-client/**',
+      'backend/src/services/database/migrations/**',
     ],
   },
   {

@@ -8,16 +8,16 @@
 services:
   bot:
     # Pull the image from GitHub Container Registry instead of building locally
-    image: "ghcr.io/one-zero-eight/sport-bot:${DOCKER_TAG_BOT:-main}"
+    image: 'ghcr.io/one-zero-eight/sport-bot:${DOCKER_TAG_BOT:-main}'
     build: !reset null
     env_file: .env.bot
 
   prisma-migrate:
     # Pull the image from GitHub Container Registry instead of building locally
-    image: "ghcr.io/one-zero-eight/sport-bot:${DOCKER_TAG_BOT:-main}"
+    image: 'ghcr.io/one-zero-eight/sport-bot:${DOCKER_TAG_BOT:-main}'
     build: !reset null
     env_file: .env.bot
 
   db:
-    ports: !reset [ ] # Do not expose any ports
+    ports: !reset [] # Do not expose any ports
     env_file: .env.db

@@ -33,7 +33,7 @@ function dateAndTimeShort(
 
   const weekDayCapitalized = weekDayShort.charAt(0).toUpperCase() + weekDayShort.slice(1)
 
-  return `${weekDayCapitalized}, ${dayOfMonth}.${month}.${year} в ${clockTime(startsAt, TIMEZONE)}—${clockTime(endsAt, TIMEZONE)}`
+  return `${weekDayCapitalized}, ${dayOfMonth}.${month}.${year} в ${clockTime(startsAt, TIMEZONE)}–${clockTime(endsAt, TIMEZONE)}`
 }
 
 function beautifulSemesterTitle(raw: string): string {
@@ -193,7 +193,7 @@ export default {
       {dateLong(startsAt)}
       <br />
       <b>Время: </b>
-      {`${clockTime(startsAt, TIMEZONE)}—${clockTime(endsAt, TIMEZONE)}`}
+      {`${clockTime(startsAt, TIMEZONE)}–${clockTime(endsAt, TIMEZONE)}`}
       <br />
       <b>Аккредитовано: </b>
       {accredited ? 'да' : 'нет'}

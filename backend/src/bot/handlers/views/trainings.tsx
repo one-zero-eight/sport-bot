@@ -135,7 +135,7 @@ export default makeView<Props>({
                       renderDetails={false}
                       backTab={tab}
                     >
-                      {`${statusEmoji} ${timeStart}—${timeEnd}`}
+                      {`${statusEmoji} ${timeStart}–${timeEnd}`}
                     </ToggleCheckInButton>
                     <TrainingDetailsButton trainingId={training.id} fromTab={tab}>
                       {`${isFavorite ? '⭐️ ' : ''}${training.title}`}

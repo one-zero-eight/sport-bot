@@ -26,17 +26,18 @@ jobs:
           node-version: 20
           cache: pnpm
 
-      - name: Install ni
-        run: npm i -g @antfu/ni
-
       - name: Install dependencies
         id: dependencies
-        run: nci
+        run: pnpm install
+
+      - name: Typecheck
+        if: '!cancelled()'
+        run: pnpm run -r typecheck
 
       - name: Lint
-        if: steps.dependencies.outcome == 'success'
-        run: nr lint
+        if: '!cancelled()'
+        run: pnpm run lint
 
       - name: Test
-        if: steps.dependencies.outcome == 'success'
-        run: nr test
+        if: '!cancelled()'
+        run: pnpm run test

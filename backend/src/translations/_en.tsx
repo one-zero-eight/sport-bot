@@ -152,6 +152,7 @@ export default {
   'Views.Main.Buttons.Semesters': '📊 Semesters',
   'Views.Main.Buttons.Calendar': '📆 Personal calendar',
   'Views.Main.Buttons.Website': '🌐 Website',
+  'Views.Main.Buttons.Faq': '❓ FAQ',
   'Views.Main.Alerts.Refreshed': 'Refreshed!',
 
   'Views.Trainings.Buttons.Day': (day: Day) => {

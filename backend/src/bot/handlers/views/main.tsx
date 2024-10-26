@@ -24,6 +24,7 @@ export default makeView({
         <button url="https://innohassle.ru/sport">{ctx.t['Views.Main.Buttons.Calendar']}</button>
         <br />
         <button url="https://sport.innopolis.university">{ctx.t['Views.Main.Buttons.Website']}</button>
+        <button url="https://telegra.ph/INH-Sport-Bot-FAQ-09-28">{ctx.t['Views.Main.Buttons.Faq']}</button>
       </keyboard>
     </>
   ),

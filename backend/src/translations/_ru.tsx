@@ -161,6 +161,7 @@ export default {
   'Views.Main.Buttons.Semesters': '📊 Семестры',
   'Views.Main.Buttons.Calendar': '📆 Личный календарь',
   'Views.Main.Buttons.Website': '🌐 Сайт',
+  'Views.Main.Buttons.Faq': '❓ FAQ',
   'Views.Main.Alerts.Refreshed': 'Обновлено!',
 
   'Views.Trainings.Buttons.Day': (day) => {

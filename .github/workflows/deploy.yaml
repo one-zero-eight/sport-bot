@@ -61,7 +61,7 @@ jobs:
     if: github.repository_owner == 'one-zero-eight' && ((github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging') || (github.event_name == 'push' && github.ref == 'refs/heads/main'))
     name: Deploy to staging server
     needs: build-and-push-image
-    runs-on: self-hosted
+    runs-on: [self-hosted, innohassle]
     environment:
       name: staging
       url: https://t.me/IUSportStagingBot
@@ -86,7 +86,7 @@ jobs:
     if: github.repository_owner == 'one-zero-eight' && (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production')
     name: Deploy to production server
     needs: build-and-push-image
-    runs-on: self-hosted
+    runs-on: [self-hosted, innohassle]
     environment:
       name: production
       url: https://t.me/IUSportBot

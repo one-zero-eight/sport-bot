@@ -63,7 +63,7 @@ export const Training = z.object({
   training: z.object({
     id: z.number(),
     custom_name: z.string().nullable(),
-    place: z.string(),
+    place: z.string().nullable(),
     load: z.number(),
     start: z.coerce.date(),
     end: z.coerce.date(),

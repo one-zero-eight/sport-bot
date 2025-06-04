@@ -25,7 +25,7 @@ export type TrainingDetailed = {
   checkedIn: boolean
   checkInAvailable: boolean
   groupId: number
-  location: string
+  location: string | null
   teachers: {
     id: number
     firstName: string

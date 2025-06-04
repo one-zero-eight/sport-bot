@@ -50,7 +50,7 @@ export const CalendarTraining = z.object({
     id: z.number(),
     group_id: z.number(),
     group_accredited: z.boolean(),
-    training_class: z.string().optional(), // Place
+    training_class: z.string().nullable(), // Place
     can_check_in: z.boolean().optional(),
     checked_in: z.boolean().optional(),
   }),

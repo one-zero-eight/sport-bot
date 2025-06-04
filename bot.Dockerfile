@@ -1,5 +1,7 @@
 FROM node:22-alpine
 
+RUN apk add --no-cache openssl3
+
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable

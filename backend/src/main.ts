@@ -1,12 +1,11 @@
 import process from 'node:process'
 import { program } from 'commander'
 import { run } from '@grammyjs/runner'
-import { Bot } from 'grammy'
 import type { Config } from './config'
 import { loadConfigFromEnv } from './config'
 import type { Logger } from './utils/logging'
 import { createLogger } from './utils/logging'
-import { createBot } from './bot'
+import { createBaseBot, createBot } from './bot'
 import { Domain } from './domain'
 import { createDatabase } from './services/database'
 import { SportClient } from './services/sport'
@@ -47,7 +46,7 @@ async function main() {
 }
 
 async function setMy(config: Config, logger: Logger) {
-  const bot = new Bot(config.bot.token)
+  const bot = createBaseBot({ token: config.bot.token, config: config })
 
   for (const [language, translation] of (Object.entries(translations) as [Language, Translation][])) {
     const commands = Object

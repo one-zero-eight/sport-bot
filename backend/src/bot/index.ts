@@ -1,5 +1,5 @@
 import { Bot } from 'grammy'
-import { HttpProxyAgent } from 'http-proxy-agent'
+import { HttpsProxyAgent } from 'https-proxy-agent'
 import plugins from './plugins'
 import handlers from './handlers'
 import type { Ctx } from './context'
@@ -7,6 +7,16 @@ import { handleError } from './handle-error'
 import type { Logger } from '~/utils/logging'
 import type { Domain } from '~/domain'
 import type { Config } from '~/config'
+
+export function createBaseBot({ token, config }: { token: string, config: Config }) {
+  // Setup proxy if URL is specified
+  let proxyAgent
+  if (config.telegramProxyUrl) {
+    proxyAgent = new HttpsProxyAgent(config.telegramProxyUrl)
+  }
+
+  return new Bot<Ctx>(token, { client: { baseFetchConfig: { agent: proxyAgent } } })
+}
 
 export function createBot({
   logger,
@@ -19,13 +29,7 @@ export function createBot({
   config: Config
   domain: Domain
 }): Bot<Ctx> {
-  // Setup proxy if URL is specified
-  let socksAgent
-  if (config.telegramProxyUrl) {
-    socksAgent = new HttpProxyAgent(config.telegramProxyUrl)
-  }
-
-  const bot = new Bot<Ctx>(token, { client: { baseFetchConfig: { agent: socksAgent } } })
+  const bot = createBaseBot({ token, config })
 
   bot.catch(handleError)
 

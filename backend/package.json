@@ -24,7 +24,7 @@
     "commander": "^12.1.0",
     "dotenv": "^16.4.5",
     "grammy": "^1.25.1",
-    "http-proxy-agent": "^7.0.2",
+    "https-proxy-agent": "^7.0.6",
     "jsdom": "^24.1.0",
     "lodash": "^4.17.21",
     "pino": "^8.21.0",

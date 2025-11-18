@@ -17,7 +17,7 @@ export const Config = z.object({
 
   telegramProxyUrl: z
     .string()
-    .describe('URL of the SOCKS proxy for requests to Telegram.\n\nExample: "http://user:password@host:port"'),
+    .describe('HTTP proxy URL for requests to Telegram Bot API.\n\nExample: "http://user:password@host:port"'),
 
   sport: z.object({
     apiBaseUrl: z

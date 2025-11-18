@@ -15,6 +15,10 @@ export const Config = z.object({
       .describe('Telegram Bot API token.\n\nExample: "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11".'),
   }),
 
+  telegramProxyUrl: z
+    .string()
+    .describe('URL of the SOCKS proxy for requests to Telegram.\n\nExample: "http://user:password@host:port"'),
+
   sport: z.object({
     apiBaseUrl: z
       .string()

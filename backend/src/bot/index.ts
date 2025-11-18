@@ -1,4 +1,5 @@
 import { Bot } from 'grammy'
+import { SocksProxyAgent } from 'socks-proxy-agent'
 import plugins from './plugins'
 import handlers from './handlers'
 import type { Ctx } from './context'
@@ -18,7 +19,13 @@ export function createBot({
   config: Config
   domain: Domain
 }): Bot<Ctx> {
-  const bot = new Bot<Ctx>(token)
+  // Setup SOCKS proxy if URL is specified
+  let socksAgent
+  if (config.telegramProxyUrl) {
+    socksAgent = new SocksProxyAgent(config.telegramProxyUrl)
+  }
+
+  const bot = new Bot<Ctx>(token, { client: { baseFetchConfig: { agent: socksAgent } } })
 
   bot.catch(handleError)
 

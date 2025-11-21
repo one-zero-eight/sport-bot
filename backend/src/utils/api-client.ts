@@ -98,10 +98,12 @@ function createAxiosWithLogging({
 
 export class RequestFailedError extends Error {
   status: number | undefined
+  axiosError: AxiosError
 
   constructor(axiosError: AxiosError) {
     super(axiosError.message, { cause: axiosError })
     this.name = 'RequestFailedError'
     this.status = axiosError.status
+    this.axiosError = axiosError
   }
 }

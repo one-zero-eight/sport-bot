@@ -2,6 +2,7 @@ import { AxiosError } from 'axios'
 import { User } from './schemas'
 import type { SemesterSummary } from './types'
 import { TelegramNotLinkedToInnohassleAccountError } from './errors'
+import { RequestFailedError } from '~/utils/api-client'
 import type { Logger } from '~/utils/logging'
 import type { Database } from '~/services/database'
 import type { SportClient } from '~/services/sport'
@@ -227,9 +228,10 @@ export class Domain {
     } catch (err) {
       if (
         retry
-        && err instanceof AxiosError
-        && err.response
-        && err.response.status === 401
+        && (
+          (err instanceof AxiosError && err.response?.status === 401)
+          || (err instanceof RequestFailedError && err.axiosError.response?.status === 401)
+        )
       ) {
         this.logger.debug({ msg: 'request to sport API returned 401, retrying...' })
         await this.refreshUserSportData(telegramId)

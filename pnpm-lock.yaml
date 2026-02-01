@@ -75,8 +75,8 @@ importers:
         specifier: ^24.1.0
         version: 24.1.0
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       pino:
         specifier: ^8.21.0
         version: 8.21.0
@@ -1857,8 +1857,8 @@ packages:
   lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
 
-  lodash@4.17.21:
-    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+  lodash@4.17.23:
+    resolution: {integrity: sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==}
 
   log-update@6.0.0:
     resolution: {integrity: sha512-niTvB4gqvtof056rRIrTZvjNYE4rCUzO6X/X+kYjd7WFxXeJ0NwEFnRxX6ehkvv3jTwrXnNdtAak5XYZuIyPFw==}
@@ -4014,7 +4014,7 @@ snapshots:
       debug: 4.3.4
       eslint: 9.5.0
       eslint-compat-utils: 0.5.0(eslint@9.5.0)
-      lodash: 4.17.21
+      lodash: 4.17.23
       toml-eslint-parser: 0.9.3
     transitivePeerDependencies:
       - supports-color
@@ -4078,7 +4078,7 @@ snapshots:
       debug: 4.3.4
       eslint: 9.5.0
       eslint-compat-utils: 0.5.0(eslint@9.5.0)
-      lodash: 4.17.21
+      lodash: 4.17.23
       natural-compare: 1.4.0
       yaml-eslint-parser: 1.2.3
     transitivePeerDependencies:
@@ -4557,7 +4557,7 @@ snapshots:
 
   lodash.merge@4.6.2: {}
 
-  lodash@4.17.21: {}
+  lodash@4.17.23: {}
 
   log-update@6.0.0:
     dependencies:
@@ -5368,7 +5368,7 @@ snapshots:
       eslint-visitor-keys: 3.4.3
       espree: 9.6.1
       esquery: 1.5.0
-      lodash: 4.17.21
+      lodash: 4.17.23
       semver: 7.6.0
     transitivePeerDependencies:
       - supports-color
@@ -5435,7 +5435,7 @@ snapshots:
   yaml-eslint-parser@1.2.3:
     dependencies:
       eslint-visitor-keys: 3.4.3
-      lodash: 4.17.21
+      lodash: 4.17.23
       yaml: 2.4.0
 
   yaml@2.4.0: {}

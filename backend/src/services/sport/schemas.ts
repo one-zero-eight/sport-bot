@@ -72,6 +72,7 @@ export const Training = z.object({
       name: z.string(),
       capacity: z.number(),
       is_club: z.boolean(),
+      is_paid: z.boolean(),
       accredited: z.boolean(),
       sport: z.object({
         id: z.number(),

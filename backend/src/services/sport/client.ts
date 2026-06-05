@@ -121,6 +121,9 @@ export class SportClient extends ApiClient {
       checkInAvailable: raw.can_check_in ?? false,
       location: raw.training.place,
       groupId: raw.training.group.id,
+      capacity: raw.training.group.capacity,
+      load: raw.training.load,
+      isPaid: raw.training.group.is_paid,
       teachers: raw.training.group.teachers.map(t => ({
         id: t.id,
         firstName: t.first_name,

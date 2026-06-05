@@ -185,6 +185,10 @@ export default {
     accredited,
     description,
     teachers,
+    load,
+    capacity,
+    location,
+    isPaid,
   }: TrainingDetailed) => (
     <>
       <b>{title}</b>
@@ -195,6 +199,15 @@ export default {
       <br />
       <b>Время: </b>
       {`${clockTime(startsAt, TIMEZONE)}–${clockTime(endsAt, TIMEZONE)}`}
+      <br />
+      <b>Доступные места: </b>
+      {`${load}/${capacity}`}
+      <br />
+      <b>Место: </b>
+      {`${location}`}
+      <br />
+      <b>Платная: </b>
+      {isPaid ? 'да' : 'нет'}
       <br />
       <b>Аккредитовано: </b>
       {accredited ? 'да' : 'нет'}

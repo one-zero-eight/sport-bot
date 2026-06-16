@@ -188,7 +188,7 @@ export default {
       {`${clockTime(startsAt, TIMEZONE)}–${clockTime(endsAt, TIMEZONE)}`}
       <br />
       <b>Available places: </b>
-      {`${load}/${capacity}`}
+      {`${capacity - load}/${capacity}`}
       <br />
       <b>Place: </b>
       {`${location}`}
